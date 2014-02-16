@@ -10,15 +10,8 @@ void sdcard_init(void){
 	PORTE_PCR5  |= PORT_PCR_MUX(4);	//SD Data 2
 	PORTE_PCR27 |= PORT_PCR_MUX(1);	//SD Write Protect
 	PORTA_PCR16 |= PORT_PCR_MUX(1);	//SD Card Detect
-	
-<<<<<<< HEAD
-	//non
-=======
-	//you
->>>>>>> 7b622fb9c712d4f42726be93d7e373fe6fbd8f73
-	
+
 	//Clocking enable (system clock)
 	SIM_SOPT2 |= SIM_SOPT2_SDHCSRC(0);
-	
-	//test
+
 }
