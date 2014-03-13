@@ -6,8 +6,6 @@
 #include "adc16.h"
 #include "settings.h"
 
-//Test Git
-
 /*
  * Notes sur l'état du code :
  * 
