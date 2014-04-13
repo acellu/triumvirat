@@ -20,9 +20,9 @@ void init_ihm (){
  * 1 = allumer
  * 
  * Exemple : 
- * 		ihm_led(1,0,0,0) -> allume la led 1 (gauche) et eteind les autres
+ * 		ihm_led(1,-1,-1,-1) -> allume la led 1 (gauche) et eteind les autres
  */
-void ihm_led (uint8 led0, uint8 led1, uint8 led2, uint8 led3){
+void ihm_led (int led0, int led1, int led2, int led3){
 
 	if (led0 == -1) {
 		TFC_BAT_LED0_OFF;
@@ -49,3 +49,14 @@ void ihm_led (uint8 led0, uint8 led1, uint8 led2, uint8 led3){
 	}
 
 }
+
+
+/*
+ * 
+ * 
+ * Red: PTB18
+ * Green: PTB19
+ * Blue: PTD1
+ * 
+ * 
+ */

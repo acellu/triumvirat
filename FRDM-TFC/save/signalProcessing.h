@@ -1,6 +1,8 @@
 #ifndef SIGNALPROCESSING_H_
 #define SIGNALPROCESSING_H_
-#include "common.h"
+
+#include "TFC/TFC_arm_cm0.h"
+
 
 /*******************************
  * Signal processing variables *

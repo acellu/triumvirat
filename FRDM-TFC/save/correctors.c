@@ -1,19 +1,20 @@
-#include "correctors.h"
-#include "signalProcessing.h"
-#include "common.h"
-#include "pwm.h"
+#include "TFC/TFC.h"
+#include "FSL/FSL.h"
 
 /// // Global variables
 // Position of the middle of the line (255 = not found)
 extern Line line;
+
 // Speed corrector variables
-float speedCoefLow=(SPEED_DUTY_MAX - SPEED_DUTY_MIN)/(64 - SPEED_OFFSET_LOW);
-float speedCoefHigh=(SPEED_DUTY_MAX - SPEED_DUTY_MIN)/(64 - SPEED_OFFSET_HIGH);
+float speedCoefLow = (SPEED_DUTY_MAX - SPEED_DUTY_MIN)/(64 - SPEED_OFFSET_LOW);
+float speedCoefHigh = (SPEED_DUTY_MAX - SPEED_DUTY_MIN)/(64 - SPEED_OFFSET_HIGH);
 float speedDutyLeft;
 float speedDutyRight;
+
 // Angle corrector variables
-long double angle_sum=0;
+long double angle_sum = 0;
 long double angle_order;
+
 // Trajectories manager
 //int8 trajectoriesPositionTable[TRAJECTORIES_NUMBER_ACQUISITION]={0};
 //uint8 trajectoriesIndiceTable=0;
@@ -68,7 +69,7 @@ void speed_manager(void){
 			speedDutyRight = SPEED_DUTY_MIN;
 		}
 		
-		//Securtié
+		//Securité
 		if(speedDutyLeft > SPEED_DUTY_MAX){
 			speedDutyLeft = SPEED_DUTY_MAX;
 		}
@@ -81,10 +82,12 @@ void speed_manager(void){
 		speedDutyLeft = SPEED_NOLINE;
 		speedDutyRight = SPEED_NOLINE;
 	}
-	
-	set_left_pwm(speedDutyLeft);
-	set_right_pwm(speedDutyRight);
+	/* set the pwm for Motors */
+	setMotorPWM(speedDutyLeft,speedDutyRight);
+	//set_left_pwm(speedDutyLeft);
+	//set_right_pwm(speedDutyRight);
 }
+
 /// BACKUP
 /*void speed_manager(void){
 	//Computing the duty value for a line detected on the right
@@ -144,14 +147,17 @@ void angle_corrector_v1(char error){
 	
 	//Limiting the angle value (physically limited)
 	if((angle_order <= 35) && (angle_order >= -35)){
-		set_servo_angle(angle_order);
+		//set_servo_angle(angle_order);
+		setServoAngle(angle_order);
 	}
+	/* Inutile -> voir fonction setServoAngle()
 	else if(angle_order<-35){
 		set_servo_angle(-35);
 	}
 	else if(angle_order>35){
 		set_servo_angle(35);
 	}
+	*/
 }
 
 void angle_manager(void){
@@ -160,15 +166,15 @@ void angle_manager(void){
 	}
 	else{
 		if(line.last_direction == right){
-			set_servo_angle(ANGLE_NO_LINE);
+			setServoAngle(ANGLE_NO_LINE);
 			//angle_sum = ANGLE_INTEGRATOR_SUM_MAX;
 		}
 		else if(line.last_direction == middle){
-			set_servo_angle(0);
+			setServoAngle(0);
 			//angle_sum = 0;
 		}
 		else{
-			set_servo_angle(-ANGLE_NO_LINE);
+			setServoAngle(ANGLE_NO_LINE);
 			//angle_sum = ANGLE_INTEGRATOR_SUM_MIN;
 		}
 	}
@@ -259,13 +265,13 @@ void angle_corrector(char error){
 	
 	//Limiting the angle value (physically limited)
 	if((angle_order <= 30) && (angle_order >= -30)){
-		set_servo_angle(angle_order);
+		setServoAngle(angle_order);
 	}
 	else if(angle_order < -30){
-		set_servo_angle(-30);
+		setServoAngle(-30);
 	}
 	else if(angle_order > 30){
-		set_servo_angle(30);
+		setServoAngle(30);
 	}
 }
 

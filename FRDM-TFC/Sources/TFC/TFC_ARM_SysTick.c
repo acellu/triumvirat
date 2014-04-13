@@ -27,7 +27,7 @@ void SysTick_Handler()
 {
 	uint8_t i;
 
-	if(DelayTimerTick<0xFFFFFFFF)
+	if(DelayTimerTick < 0xFFFFFFFF)
 	{
 		DelayTimerTick++;
 	}
@@ -41,7 +41,7 @@ void TFC_Delay_mS(unsigned int TicksIn_mS)
 {
 	DelayTimerTick = 0;
 
-	while(DelayTimerTick<TicksIn_mS)
+	while(DelayTimerTick < TicksIn_mS)
 	{
 	}
 }

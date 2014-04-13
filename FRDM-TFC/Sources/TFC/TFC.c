@@ -3,15 +3,16 @@
 
 void TFC_Init()
 {
-	TFC_InitClock();
-	TFC_InitSysTick();
-	TFC_InitGPIO();
-	TFC_InitServos();
-	TFC_InitMotorPWM();
-    TFC_InitADCs();
-    TFC_InitLineScanCamera();
-    TFC_InitTerminal();
-	TFC_InitUARTs();
+	TFC_InitClock(); //Ok
+	TFC_InitSysTick(); //Ok
+	TFC_InitGPIO(); //Ok
+	TFC_InitServos(); //Ok
+	TFC_InitMotorPWM(); //Ok
+    TFC_InitADCs(); //Ok
+    TFC_InitLineScanCamera(); //Ok
+    TFC_InitTerminal(); //*
+	TFC_InitUARTs(); //*
+	
 	TFC_HBRIDGE_DISABLE;
 	TFC_SetMotorPWM(0,0);
 	

@@ -44,7 +44,7 @@
 /*
  * ANGLE_PROPORTIONNAL variant selon la valeur de la PWM pour la fonction correcteur
  */
-/// Coefficient avec une pwm compris entre 0 et 10.
+/// Coefficient avec une pwm compris entre 0 et 100.
 #define ANGLE_PROPORTIONNAL_10 		0.6
 #define ANGLE_PROPORTIONNAL_20 		0.56
 #define ANGLE_PROPORTIONNAL_30 		0.64 //0.54

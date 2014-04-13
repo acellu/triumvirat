@@ -1,6 +1,11 @@
 #include "TFC/TFC.h"
 #include "FSL/FSL.h"
 
+/*
+ * Voir TFC_ADC.c
+ */
+
+
 // Line variable
 Line line;
 
@@ -13,10 +18,10 @@ void init_line(void){
 	line.width = 0;
 }
 
-void signalProcessing(uint8 * acquisition_camera){
+void signalProcessing(uint16 * acquisition_camera){
 	int32 gradient[128];
 	int32 treated_gradient[128];
-	
+
 	gradient_compute(acquisition_camera, gradient);
 	
 	gradient_moyenneMobile(gradient, treated_gradient);
@@ -28,15 +33,18 @@ void signalProcessing(uint8 * acquisition_camera){
 }
 
 
-void gradient_compute(uint8 * acquisition_camera, int32 * gradient){
+void gradient_compute(uint16 * acquisition_camera, int32 * gradient){
 	uint8 i = 0;
-	
+
 	for (i=0; i<128; i++) {
 		//Calcul du gradient
-		if(i < 127)
+		if(i < 127) {
 			gradient[i] = acquisition_camera[i] - acquisition_camera[i + 1];
-		else
-			gradient[127] = 0; //Dernière valeur aucun changement
+			//gradient[i] = LineScanImage0[i] - LineScanImage0[i + 1];
+		}
+		else {
+			gradient[127] = acquisition_camera[127]; //Dernière valeur aucun changement (0)
+		}
 	}
 }
 
@@ -82,7 +90,6 @@ void gradient_computeLineData(int32 * gradient){
 		//tlcd_set_numeric1(0);
 		//It's not a finish line, so we switch off the led that indicate it and set isFinihLine to 0
 		ihm_led(0,0,0,-1);
-		//ihm_led_off(Yellow);
 		line.isFinishLine = 0;
 		line.found = 1;
 		line.width = data.minPosition - data.maxPosition;
@@ -207,121 +214,6 @@ void gradient_computeLineData_v2(int32 * gradient){
 	line.linedata = data;
 	
 }
-
-void gradient_checkIfFinishLine_old(uint8 numberofPeak, Peak * peak){
-	/*	
-	 * Seeking the first and the last peak of the scheme (BLACK-WHITE-BLACK-WHITE-BLACK)
-	 * 
-	 *  _______________________________________________________
-	 * |                                                       |
-	 * |	   1            2    3    4    5            6      |
-	 * |	   |            |    |    |    |            |      |
-	 * |       v	 		v	 v    v    v            v      |
-	 * |   ooooo-------------ooooo-----ooooo-------------ooo   |
-	 * |							Legend : - black / o white |
-	 * |_______________________________________________________|					
-	 * 					Fig. Posible peaks
-	 * 			
-	 * Here, we want to extract the peak 2 and 5, but there are different scenarios.
-	 * 
-	 *  _______________________________________________________
-	 * |                                                       |
-	 * |	      1            2    3    4    5                |
-	 * |          |            |    |    |    |                |
-	 * |          v            v    v    v    v                |
-	 * |   oooooooo-------------ooooo-----ooooo-------------   |
-	 * |							Legend : - black / o white |
-	 * |_______________________________________________________|					
-	 * 				Fig. Other detection possible
-	 * 				 if the line is not centred
-	 * 				 
-	 * 	In this case there is no peak numer 6 and we still want peak 2 and 5.
-	 *  _______________________________________________________
-	 * |                                                       |
-	 * |	           1    2    3    4            5           |
-	 * |               |    |    |    |            |           |
-	 * |               v    v    v    v            v           |
-	 * |   -------------ooooo-----ooooo-------------oooooooo   |
-	 * |							Legend : - black / o white |
-	 * |_______________________________________________________|					
-	 * 				Fig. Other detection possible
-	 * 				 if the line is not centred
-	 * 				 
-	 * 	Here we want the peak 1 and 5. 
-	 * 	
-	 * 	For a transition from black to white the gradient will be negative,
-	 * 	For a transition from white to black the gradient will be positive,
-	 * 	so the first value we want will be the first negative peak and the last value will be the last positive peak
-	 * 				 
-	 */
-	
-	int8 firstPeak=-1;
-	int8 lastPeak=-1;
-	uint8 i=0;
-
-	//Seeking the first peak
-	while((firstPeak == -1) && (i<numberofPeak)){
-		if(peak[i].signe == negatif){
-			firstPeak = i;
-		}
-		i++;
-	}
-	
-	//Seeking the last peak
-	i = numberofPeak-1;
-	while((lastPeak == -1) && (i>0)){
-		if(peak[i].signe == positif){
-			lastPeak = i;
-		}
-		i--;
-	}
-	
-	
-	if(firstPeak != -1 && lastPeak !=-1){
-		/*
-		 * Checking if it can be a finish line
-		 * 
-		 * - 4 peaks are found (equivalent to difference of indices equal 3)
-		 * - The first peak is negative
-		 * - The second peak is positive
-		 * - The third peak is negative
-		 * - the forth peak is positive
-		 * - The width of the finish found line is inferior to FINISH_LINE_MAX_WIDTH
-		 * - The width of the first white found line is inferior to FINISH_LINE_MAX_WIDTH
-		 * - The width of the black found line is inferior to FINISH_LINE_MAX_WIDTH
-		 * - The width of the last white found line is inferior to FINISH_LINE_MAX_WIDTH
-		 * 
-		 */
-		if( ((lastPeak-firstPeak)==3) &&
-			(peak[firstPeak].signe == negatif) &&
-			(peak[firstPeak+1].signe == positif) &&
-			(peak[firstPeak+2].signe == negatif) &&
-			(peak[firstPeak+3].signe == positif) &&
-			((peak[lastPeak].position - peak[firstPeak].position) < FINISH_LINE_MAX_WIDTH) &&
-			((peak[firstPeak+1].position - peak[firstPeak].position) < FINISH_LINE_WHITE_WIDTH) &&
-			((peak[firstPeak+2].position - peak[firstPeak+1].position) < FINISH_LINE_BLACK_WIDTH) &&
-			((peak[firstPeak+3].position - peak[firstPeak+2].position) < FINISH_LINE_WHITE_WIDTH)
-		){
-			//It's a finish line
-			line.found = 1;
-			line.isFinishLine = 1;
-			line.position = (peak[firstPeak+2].position + peak[firstPeak+1].position)/2;
-			
-			if(line.position > THRESHOLD_RIGHT)
-				line.last_direction = right;
-			else if(line.position < THRESHOLD_LEFT)
-				line.last_direction = left;
-			else
-				line.last_direction = middle;
-			
-			
-			//Switch the yellow led on to notify us
-			//ihm_led_on(Yellow);
-			LED_FINISH_LINE_DETECTED;
-		}
-	}
-}
-
 
 /*
  * Choix des conditions pour chaques versions (1 à 3) de la fonction gradient_checkIfFinishLine

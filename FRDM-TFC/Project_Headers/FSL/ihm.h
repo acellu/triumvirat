@@ -18,6 +18,6 @@
 
 void init_ihm ();
 
-void ihm_led (uint8 led0, uint8 led1, uint8 led2, uint8 led3);
+void ihm_led (int led0, int led1, int led2, int led3);
 
 #endif /* IHM_H_ */

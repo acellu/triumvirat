@@ -1,7 +1,5 @@
-#include "signalProcessing.h"
-#include "common.h"
-#include "twrpi_slcd.h"
-#include "ihm.h"
+#include "TFC/TFC.h"
+#include "FSL/FSL.h"
 
 // Line variable
 Line line;
@@ -72,18 +70,19 @@ void gradient_computeLineData(int32 * gradient){
 	//Checking if it's a possible line (value of the max)
 	if((data.maxValue < GRADIENT_MINIMUM_VALUE) || (data.minValue > -GRADIENT_MINIMUM_VALUE)){
 		line.found = 0;
-		tlcd_set_numeric1(1);
+		//tlcd_set_numeric1(1);
 	}
 	//Checking if it's a possible line (width)
 	else if(((data.minPosition - data.maxPosition) > MAXIMUM_WIDTH) || 
 			((data.minPosition - data.maxPosition) < MINIMUM_WIDTH)){
 		line.found = 0;
-		tlcd_set_numeric1(2);
+		//tlcd_set_numeric1(2);
 	}
 	else{
-		tlcd_set_numeric1(0);
+		//tlcd_set_numeric1(0);
 		//It's not a finish line, so we switch off the led that indicate it and set isFinihLine to 0
-		ihm_led_off(Yellow);
+		ihm_led(0,0,0,-1);
+		//ihm_led_off(Yellow);
 		line.isFinishLine = 0;
 		line.found = 1;
 		line.width = data.minPosition - data.maxPosition;
@@ -93,7 +92,7 @@ void gradient_computeLineData(int32 * gradient){
 			line.position = ((data.minPosition + data.maxPosition) / 2);
 		}
 		else{
-			tlcd_set_numeric1(3);
+			//tlcd_set_numeric1(3);
 		}
 		
 		if(line.position > THRESHOLD_RIGHT)
@@ -149,30 +148,32 @@ void gradient_computeLineData_v2(int32 * gradient){
 	//Checking if it's a possible line (value of the max)
 	if((data.maxValue < GRADIENT_MINIMUM_VALUE) || (data.minValue > -GRADIENT_MINIMUM_VALUE)){
 		line.found = 0;
-		tlcd_set_numeric1(1);
+		//tlcd_set_numeric1(1);
 	}
 	//If the line is too close of the edge of the camera (sensible to noise) => using a trigger
 	// => s'il avait perdu la ligne a droite, il faut que la position du max soit superieur à l'offset + premiere valeur scannée pour qu'il la retrouve
 	else if((line.found == 0) && (data.maxPosition < (EDGE_NOISE_OFFSET + FIRST_SCANNED_VALUE)) && line.last_direction == left){
 		line.found = 0;
-		tlcd_set_numeric1(5);
+		//tlcd_set_numeric1(5);
 	}
 	//If the line is too close of the edge of the camera (sensible to noise) => using a trigger
 	// => s'il avait perdu la ligne a gauche, il faut que la position du min soit superieur à derniere valeur scannée - l'offset pour qu'il la retrouve
 	else if((line.found == 0) && (data.minPosition > (LAST_SCANNED_VALUE - EDGE_NOISE_OFFSET)) && line.last_direction == right){
 		line.found = 0;
-		tlcd_set_numeric1(5);
+		//tlcd_set_numeric1(5);
 	}
 	//Checking if it's a possible line (width)
 	else if(((data.minPosition - data.maxPosition) > MAXIMUM_WIDTH) || 
 			((data.minPosition - data.maxPosition) < MINIMUM_WIDTH)){
 		line.found = 0;
-		tlcd_set_numeric1(2);
+		//tlcd_set_numeric1(2);
 	}
 	else{
-		tlcd_set_numeric1(0);
+		//tlcd_set_numeric1(0);
 		//It's not a finish line, so we switch off the led that indicate it and set isFinihLine to 0
-		ihm_led_off(Yellow);
+		ihm_led(0,0,0,-1);
+		//ihm_led_off(Yellow);
+		
 		line.isFinishLine = 0;
 		line.found = 1;
 		line.width = data.minPosition - data.maxPosition;
@@ -182,7 +183,7 @@ void gradient_computeLineData_v2(int32 * gradient){
 			line.position = ((data.minPosition + data.maxPosition) / 2);
 		}
 		else{
-			tlcd_set_numeric1(3);
+			//tlcd_set_numeric1(3);
 		}
 		
 		if(line.position > THRESHOLD_RIGHT)
@@ -315,7 +316,8 @@ void gradient_checkIfFinishLine_old(uint8 numberofPeak, Peak * peak){
 			
 			
 			//Switch the yellow led on to notify us
-			ihm_led_on(Yellow);
+			//ihm_led_on(Yellow);
+			LED_FINISH_LINE_DETECTED;
 		}
 	}
 }
@@ -499,7 +501,8 @@ void gradient_checkIfFinishLine(uint8 numberofPeak, Peak * peak){
 			
 			
 			//Switch the yellow led on to notify us
-			ihm_led_on(Yellow);
+			//ihm_led_on(Yellow);
+			LED_FINISH_LINE_DETECTED;
 		}
 	}
 }

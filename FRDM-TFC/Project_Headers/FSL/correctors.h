@@ -59,14 +59,25 @@
 /*
  * Oscillation Kp = 1,2
  */
-//#define ANGLE_PROPORTIONNAL_FACTOR (float)0.54
+
+/* PROPORTIONNAL PARAMETER */
 #define ANGLE_PROPORTIONNAL_FACTOR (float)0.54
+
+/* INTEGRATOR PARAMETER */
 #define ANGLE_INTEGRATOR_FACTOR (float)0.001
-//#define ANGLE_SUM_FACTOR (float)0.2
-#define ANGLE_SUM_FACTOR (float)0.35
 /// Advice : maximum order wanted / ANGLE_INTEGRATOR_FACTOR, can be above the possible order of the servo-motor, it will create a latency to react
 #define ANGLE_INTEGRATOR_SUM_MAX 3500
 #define ANGLE_INTEGRATOR_SUM_MIN -3500
+
+/* DERIVATOR PARAMETER */
+#define ANGLE_DERIVATOR_FACTOR (float)1
+
+/* SUM PARAMETER */
+//#define ANGLE_SUM_FACTOR (float)0.2
+#define ANGLE_SUM_FACTOR (float)0.35
+
+
+
 
 #define ANGLE_SAMPLE_TIME 0x15924
 //#define ANGLE_SAMPLE_TIME 0x1D924
@@ -82,9 +93,8 @@
 //#define TRAJECTORIES_NUMBER_ACQUISITION 40
 
 
-void angle_corrector(char error);
+void angle_corrector(char error , uint8 proportional , uint8 integral , uint8 derivative);
 void angle_manager(void);
-void angle_corrector_v1(char error);
 void speed_manager(void);
 void init_sample_time(void);
 
