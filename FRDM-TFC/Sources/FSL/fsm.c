@@ -9,14 +9,16 @@ extern Line line;
  * Fonction d'initialisation
  */
 void init_fsm(void){
+	
 	/* Initialise the line variable */
 	init_line();
 	
 	/* Set the Default duty cycle to 0 % duty cycle */
-	setMotorPWM(0,0);
+	MOTOR_STOP;
+	TFC_HBRIDGE_DISABLE;
 	
 	/* Centering servo channel 0 and 1 */
-	setServoAngle(0);
+	SERVO_ANGLE_INIT;
 	
 	/* Clear all led */
 	LED_CLEAR_ALL;
@@ -43,10 +45,14 @@ void fsm(void){
 			/* Boutton Start */
 			if(TFC_PUSH_BUTTON_0_PRESSED){  //If pressed...
 				LED_GO_ACCEPTED;
+				
+				/* Enable HBRIDGE useful for motor */
+				TFC_HBRIDGE_ENABLE;
+				
 				line.scan_number = 0;
-				/*
-				time_delay_ms(1500); //1,5 seconde
-				*/
+				
+				TFC_Delay_mS(1000);
+				
 				etat = Following_line;
 			}
 			/*Boutton Reset */
@@ -63,6 +69,8 @@ void fsm(void){
 				angle_manager();
 			}
 			
+			//angle_manager();
+			
 			#ifndef NO_MOTOR
 			speed_manager();
 			#endif
@@ -78,7 +86,8 @@ void fsm(void){
 		
 		case Stop :
 			/* Stop Motors */
-			TFC_SetMotorPWM(-1.0,-1.0);
+			MOTOR_STOP;
+			TFC_HBRIDGE_DISABLE;
 			
 			//Computing only if it's a new sample (cf ANGLE_SAMPLE_TIME definition)
 			

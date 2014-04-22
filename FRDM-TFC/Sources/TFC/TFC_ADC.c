@@ -599,7 +599,12 @@ void ADC0_IRQHandler()
 							LineScanImage0 = &LineScanImage0Buffer[1][0];
 							LineScanImage1 = &LineScanImage1Buffer[1][0];
 						}
+						/* ------------------ UPDATE AXEL ----------------- */
 						
+						//signalProcessing(LineScanImage0);
+						signalProcessing(LineScanImage1);
+						
+						/* ------------------------------------------------ */
 						LineScanImageReady = TRUE;
 					}
 					

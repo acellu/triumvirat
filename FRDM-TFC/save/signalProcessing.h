@@ -125,11 +125,11 @@ typedef struct{
  */
 
 
-void gradient_compute(uint16 * acquisition_camera, int32 * gradient);
+void gradient_compute(uint8 * acquisition_camera, int32 * gradient);
 void gradient_computeLineData(int32 * gradient);
 void gradient_moyenneMobile(int32 * signal, int32 * treated_signal);
 void gradient_computeLineData_v2(int32 * gradient);
-void signalProcessing(uint16 * acquisition_camera);
+void signalProcessing(uint8 * acquisition_camera);
 void gradient_checkIfFinishLine_old(uint8 numberofPeak, Peak * peak);
 uint8 gradient_peakDetection(int32 * signal, Peak * peak, uint8 threshold);
 void gradient_moyenneMobile3(int32 * signal, int32 * treated_signal);

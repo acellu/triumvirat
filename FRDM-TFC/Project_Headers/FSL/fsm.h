@@ -1,5 +1,5 @@
-#ifndef FSM_MAIN_H_
-#define FSM_MAIN_H_
+#ifndef FSM_H_
+#define FSM_H_
 
 #define DEFAULT_NUMBER_OF_LINE 200	
 

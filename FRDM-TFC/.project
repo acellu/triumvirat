@@ -83,5 +83,13 @@
 			<name>PREVIOUS_PROJECT_LOC</name>
 			<value>PROJECT_LOC</value>
 		</variable>
+		<variable>
+			<name>PREVIOUS_PROJECT_LOC1</name>
+			<value>PROJECT_LOC</value>
+		</variable>
+		<variable>
+			<name>PREVIOUS_PROJECT_LOC12</name>
+			<value>PROJECT_LOC</value>
+		</variable>
 	</variableList>
 </projectDescription>

@@ -71,15 +71,15 @@ void TFC_InitMotorPWM()
 void TFC_SetMotorPWM(float MotorA , float MotorB)
 {
 	
-	if(MotorA>1.0)
+	if(MotorA > 1.0)
 		MotorA = 1.0;
-	else if(MotorA<-1.0)
+	else if(MotorA < -1.0)
 		MotorA = -1.0;
 	
-	if(MotorB>1.0)
-			MotorB = 1.0;
-		else if(MotorB<-1.0)
-			MotorB = -1.0;
+	if(MotorB > 1.0)
+		MotorB = 1.0;
+	else if(MotorB < -1.0)
+		MotorB = -1.0;
 		
 	TPM0_C2V = (uint16_t) ((float)TPM0_MOD * (float)((MotorA + 1.0)/2.0));
 	TPM0_C3V = TPM0_C2V;

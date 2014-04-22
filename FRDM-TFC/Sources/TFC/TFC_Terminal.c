@@ -28,6 +28,13 @@ void TerminalCmd_S(char *arg);
 void TerminalCmd_H(char *arg);
 void TerminalCmd_E(char *arg);
 void TerminalCmd_D(char *arg);
+
+/* --------- UPDATE AXEL ---------- */
+void TerminalCmd_CP(char *arg);
+void TerminalCmd_CI(char *arg);
+void TerminalCmd_CD(char *arg);
+/* -------------------------------- */
+
 //Populate this array with the callback functions and their terminal command string
 TerminalCallbackRecord MyTerminalCallbackRecords[] ={	{"help",TerminalCmd_Help,"Lists available commands"},
                                                         {"L",TerminalCmd_GetLineScan,"Displays linescan camera data"},
@@ -35,6 +42,9 @@ TerminalCallbackRecord MyTerminalCallbackRecords[] ={	{"help",TerminalCmd_Help,"
                                                         {"H", TerminalCmd_H,"Commands the H-Bridges"},
 														{"E",TerminalCmd_E, "Enables the H-Bridges"},
 														{"D",TerminalCmd_D, "Disables the H-Bridges"},
+														{"CP",TerminalCmd_CP, "Set corrector P param"},
+														{"CI",TerminalCmd_CI, "Set corrector I param"},
+														{"CD",TerminalCmd_CD, "Set corrector D param"},
                                                         };
 
 //*****************************************************************
@@ -49,6 +59,72 @@ char TerminalCmdBuf[MAX_TERMINAL_CMD_CHARS+1];
 char TerminalArgs[MAX_TERMINAL_LINE_CHARS-MAX_TERMINAL_CMD_CHARS];
 uint8_t NextCharIn;
 uint8_t CmdFound;
+
+
+/* -------------------------- UPDATE AXEL --------------------------------- */
+
+void TerminalCmd_CD(char *arg)
+{
+
+	double correctorDerivative = 0;
+	
+	TERMINAL_PRINTF("Current corrector derivative is %f\r\n",angle_derivator_factor);
+
+	if(sscanf(arg,"%f",&correctorDerivative) == 2 && correctorDerivative >= 0)
+	{
+		TERMINAL_PRINTF("Setting corrector derivative to %f\r\n",correctorDerivative);	
+		
+		angle_derivator_factor = correctorDerivative;
+		
+	}
+	else
+	{
+		TERMINAL_PRINTF("Invalid corrector derivative string. There must be argument up to 0. Ex: CD 2.55\r\n");
+	}
+}
+
+void TerminalCmd_CP(char *arg)
+{
+
+	double correctorProportional = 0;
+	
+	TERMINAL_PRINTF("Current corrector proportional is %f\r\n",angle_proportionnal_factor);
+
+	if(sscanf(arg,"%f",&correctorProportional) == 2 && correctorProportional >= 0)
+	{
+		TERMINAL_PRINTF("Setting corrector proportional to %f\r\n",correctorProportional);	
+		
+		angle_proportionnal_factor = correctorProportional;
+		
+	}
+	else
+	{
+		TERMINAL_PRINTF("Invalid corrector proportional string. There must be argument up to 0. Ex: CP 2.55\r\n");
+	}
+}
+
+void TerminalCmd_CI(char *arg)
+{
+
+	double correctorIntegral = 0;
+	
+	TERMINAL_PRINTF("Current corrector integral is %f\r\n",angle_integrator_factor);
+
+	if(sscanf(arg,"%f",&correctorIntegral) == 2 && correctorIntegral >= 0)
+	{
+		TERMINAL_PRINTF("Setting corrector integral to %f\r\n",correctorIntegral);	
+		
+		angle_integrator_factor = correctorIntegral;
+		
+	}
+	else
+	{
+		TERMINAL_PRINTF("Invalid corrector integral string. There must be argument up to 0. Ex: CI 2.55\r\n");
+	}
+}
+
+/* ------------------------------------------------------------------------ */
+
  
 void TerminalBootMsg()
 {
@@ -160,7 +236,7 @@ void TerminalCmd_H(char *arg)
 	if(sscanf(arg,"%d,%d",&MotorSetting[0],&MotorSetting[1]) == 2)
 	{
 	
-	TERMINAL_PRINTF("Setting motor effort to to %d , %d\r\n",MotorSetting[0],MotorSetting[1]);
+	TERMINAL_PRINTF("Setting motor effort to %d , %d\r\n",MotorSetting[0],MotorSetting[1]);
 	
 	TFC_SetMotorPWM((float)MotorSetting[0]/100.0f,(float)MotorSetting[1]/100.0f);
 
@@ -172,7 +248,6 @@ void TerminalCmd_H(char *arg)
 	}
 	
 }
-
 
 void TFC_ProcessTerminal()
 {
