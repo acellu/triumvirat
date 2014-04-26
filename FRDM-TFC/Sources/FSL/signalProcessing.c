@@ -5,7 +5,6 @@
  * Voir TFC_ADC.c
  */
 
-
 // Line variable
 Line line;
 
@@ -19,6 +18,7 @@ void init_line(void){
 }
 
 void signalProcessing(uint16 * acquisition_camera){
+	
 	int32 gradient[128];
 	int32 treated_gradient[128];
 
@@ -27,8 +27,8 @@ void signalProcessing(uint16 * acquisition_camera){
 	gradient_moyenneMobile(gradient, treated_gradient);
 	
 	gradient_moyenneMobile3(treated_gradient, gradient);
-	
-	gradient_computeLineData_v2(gradient);
+
+	gradient_computeLineData(gradient);
 	
 }
 
@@ -40,14 +40,12 @@ void gradient_compute(uint16 * acquisition_camera, int32 * gradient){
 		//Calcul du gradient
 		if(i < 127) {
 			gradient[i] = acquisition_camera[i] - acquisition_camera[i + 1];
-			//gradient[i] = LineScanImage0[i] - LineScanImage0[i + 1];
 		}
 		else {
-			gradient[127] = acquisition_camera[127]; //Dernière valeur aucun changement (0)
+			gradient[127] = 0; //Dernière valeur aucun changement (0)
 		}
 	}
 }
-
 
 void gradient_computeLineData(int32 * gradient){
 	
@@ -60,84 +58,8 @@ void gradient_computeLineData(int32 * gradient){
 	Peak peak[6];
 	
 	//Initialisation de data
-	data.maxValue = -500;
-	data.minValue = 500;
-	
-	//Recherche de maximum et de minimum (position et valeur), ainsi que le referencement de tout les pics
-	for (i=FIRST_SCANNED_VALUE; i<LAST_SCANNED_VALUE; i++) {
-		if(gradient[i] > data.maxValue){
-			data.maxValue = gradient[i];
-			data.maxPosition = i;
-		}
-		else if(gradient[i] < data.minValue){
-			data.minValue = gradient[i];
-			data.minPosition = i;
-		}
-	}
-	
-	//Checking if it's a possible line (value of the max)
-	if((data.maxValue < GRADIENT_MINIMUM_VALUE) || (data.minValue > -GRADIENT_MINIMUM_VALUE)){
-		line.found = 0;
-		//tlcd_set_numeric1(1);
-	}
-	//Checking if it's a possible line (width)
-	else if(((data.minPosition - data.maxPosition) > MAXIMUM_WIDTH) || 
-			((data.minPosition - data.maxPosition) < MINIMUM_WIDTH)){
-		line.found = 0;
-		//tlcd_set_numeric1(2);
-	}
-	else{
-		//tlcd_set_numeric1(0);
-		//It's not a finish line, so we switch off the led that indicate it and set isFinihLine to 0
-		ihm_led(0,0,0,-1);
-		line.isFinishLine = 0;
-		line.found = 1;
-		line.width = data.minPosition - data.maxPosition;
-		//Checking if the deplacement of the line was not too fast
-		if( ((((data.minPosition + data.maxPosition) / 2) - line.position)<MAXIMUM_LINE_MOVEMENT_ALLOWED) &&
-			((((data.minPosition + data.maxPosition) / 2) - line.position)>-MAXIMUM_LINE_MOVEMENT_ALLOWED)	){
-			line.position = ((data.minPosition + data.maxPosition) / 2);
-		}
-		else{
-			//tlcd_set_numeric1(3);
-		}
-		
-		if(line.position > THRESHOLD_RIGHT)
-			line.last_direction = right;
-		else if(line.position < THRESHOLD_LEFT)
-			line.last_direction = left;
-		else
-			line.last_direction = middle;
-	}
-	
-	
-	//Finding 6 peak or less in the signal
-	numberofPeak = gradient_peakDetection(gradient, peak, (data.maxValue-FINISH_LINE_MAX_OFFSET));
-	//Checking if it's a finish line	
-	if(numberofPeak >= 4 && numberofPeak < 7){
-		//gradient_checkIfFinishLine(numberofPeak, peak);
-	}
-	
-	line.scan_number++;
-	
-	line.linedata = data;
-	
-}
-
-
-void gradient_computeLineData_v2(int32 * gradient){
-	
-	uint8 i;
-	// Data collected for analysis (min max position and value), inside the scanned pixels
-	LineData data;	
-	// Number of "peak" above the GRADIENT_MINIMUM_VALUE and their coordinate
-	uint8 numberofPeak=0;
-	// Peak variable, used to know the location of every peak detected in the signal processing (used for finishline finding)
-	Peak peak[6];
-	
-	//Initialisation de data
-	data.maxValue = -500;
-	data.minValue = 500;
+	data.maxValue = 500;
+	data.minValue = -500;
 	
 	//Recherche de maximum et de minimum (position et valeur), ainsi que le referencement de tout les pics
 	for (i=FIRST_SCANNED_VALUE; i<LAST_SCANNED_VALUE; i++) {
@@ -155,42 +77,37 @@ void gradient_computeLineData_v2(int32 * gradient){
 	//Checking if it's a possible line (value of the max)
 	if((data.maxValue < GRADIENT_MINIMUM_VALUE) || (data.minValue > -GRADIENT_MINIMUM_VALUE)){
 		line.found = 0;
-		//tlcd_set_numeric1(1);
 	}
 	//If the line is too close of the edge of the camera (sensible to noise) => using a trigger
 	// => s'il avait perdu la ligne a droite, il faut que la position du max soit superieur à l'offset + premiere valeur scannée pour qu'il la retrouve
 	else if((line.found == 0) && (data.maxPosition < (EDGE_NOISE_OFFSET + FIRST_SCANNED_VALUE)) && line.last_direction == left){
 		line.found = 0;
-		//tlcd_set_numeric1(5);
 	}
 	//If the line is too close of the edge of the camera (sensible to noise) => using a trigger
 	// => s'il avait perdu la ligne a gauche, il faut que la position du min soit superieur à derniere valeur scannée - l'offset pour qu'il la retrouve
 	else if((line.found == 0) && (data.minPosition > (LAST_SCANNED_VALUE - EDGE_NOISE_OFFSET)) && line.last_direction == right){
 		line.found = 0;
-		//tlcd_set_numeric1(5);
 	}
 	//Checking if it's a possible line (width)
 	else if(((data.minPosition - data.maxPosition) > MAXIMUM_WIDTH) || 
 			((data.minPosition - data.maxPosition) < MINIMUM_WIDTH)){
 		line.found = 0;
-		//tlcd_set_numeric1(2);
 	}
 	else{
-		//tlcd_set_numeric1(0);
 		//It's not a finish line, so we switch off the led that indicate it and set isFinihLine to 0
 		ihm_led(0,0,0,-1);
-		//ihm_led_off(Yellow);
 		
 		line.isFinishLine = 0;
 		line.found = 1;
 		line.width = data.minPosition - data.maxPosition;
+		
 		//Checking if the deplacement of the line was not too fast
-		if( ((((data.minPosition + data.maxPosition) / 2) - line.position)<MAXIMUM_LINE_MOVEMENT_ALLOWED) &&
-			((((data.minPosition + data.maxPosition) / 2) - line.position)>-MAXIMUM_LINE_MOVEMENT_ALLOWED)	){
+		if( ((((data.minPosition + data.maxPosition) / 2) - line.position) < MAXIMUM_LINE_MOVEMENT_ALLOWED) &&
+			((((data.minPosition + data.maxPosition) / 2) - line.position) > -MAXIMUM_LINE_MOVEMENT_ALLOWED)	){
 			line.position = ((data.minPosition + data.maxPosition) / 2);
 		}
 		else{
-			//tlcd_set_numeric1(3);
+			
 		}
 		
 		if(line.position > THRESHOLD_RIGHT)

@@ -1,0 +1,35 @@
+information
+
+ Created on: Apr 23, 2014
+     Author: Axel
+     
+BiBiche 2.0 : Caractéristiques --> Poids sans pile = 2562 g
+							   --> Poids pile (2400 mah) = 934 g
+							   --> Poids pile (3000 mah) = 1072 g
+							   --> Poids pile (4700 mah) = 1375 g
+							   --> Poids total = 3500 g
+							   --> Vitesse moyenne max = 4.62 m/s soit 16.63 km/h	
+     
+Caméra supérieur = Channel 1 --> distance de vision : [L = 42 cm ; l = 42 cm ; e = 2cm] (33mm/pix)
+							 --> largeur de la bande : 5 - 8 pixel
+							 --> centre : pixel n°70
+							 --> vision exploitable : [20 ; 105] pixel
+							 --> focale : 3mm
+
+Caméra inférieur = Channel 0 --> distance de vision : [L = 15 cm ; l = 15 cm ; e = 2cm] (11.7mm/pix)
+							 --> largeur de la bande : 15 - 20 pixel
+							 --> centre : pixel n°64
+							 --> vision exploitable : [5 ; 120] pixel
+							 --> focale : 4mm
+							 
+		--> Décalage des centres : 5 pixel (1.65cm)
+
+		--> Largeur bande noire : 2.5mm
+
+Potentiommetre channel 0 : A
+Potentiommetre channel 1 : B
+
+
+Servo = Channel 0 --> Droite = valeur angle positive (max : 26.0 / 30)
+				  --> Gauche = valeur angle négative (max : -19.0 / 30)
+

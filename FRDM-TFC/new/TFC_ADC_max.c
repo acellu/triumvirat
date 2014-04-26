@@ -383,24 +383,24 @@ void InitADC0()
     disable_irq(INT_ADC0-16);   
      
     Master_Adc0_Config.CONFIG1 = ADLPC_NORMAL 			//No low power mode
-								| ADC_CFG1_ADIV(ADIV_4) //divide input by 4
-								| ADLSMP_LONG 			//long sample time
-								| ADC_CFG1_MODE(MODE_12)//single ended 8-bit conversion
+								| ADC_CFG1_ADIV(ADIV_1) //divide input by 1
+								| ADLSMP_SHORT 			//short sample time
+								| ADC_CFG1_MODE(MODE_8)//single ended 8-bit conversion
 								| ADC_CFG1_ADICLK(ADICLK_BUS);
     
     Master_Adc0_Config.CONFIG2 = MUXSEL_ADCA // select the A side of the ADC channel.
 								| ADACKEN_DISABLED
 								| ADHSC_HISPEED
-								| ADC_CFG2_ADLSTS(ADLSTS_2);//Extra long sample Time (20 extra clocks)
+								| ADC_CFG2_ADLSTS(ADLSTS_6);//Extra long sample Time (XX extra clocks)
     
     
     Master_Adc0_Config.COMPARE1 = 00000; // Comparators don't matter for calibration
-    Master_Adc0_Config.COMPARE1 = 0xFFFF;
+    Master_Adc0_Config.COMPARE1 = 0x0000;
     
-    Master_Adc0_Config.STATUS2  = ADTRG_HW //hardware triggers for calibration
+    Master_Adc0_Config.STATUS2  = ADTRG_SW //hardware triggers for calibration
                                | ACFE_DISABLED //disable comparator
                                | ACFGT_GREATER
-                               | ACREN_ENABLED
+                               | ACREN_DISABLED
                                | DMAEN_DISABLED //Disable DMA
                                | ADC_SC2_REFSEL(REFSEL_EXT); //External Reference
         
@@ -416,7 +416,7 @@ void InitADC0()
     // the ADC will be inactive.  Channel 31 is just disable function.
     // There really is no channel 31.
     
-    Master_Adc0_Config.STATUS1A = AIEN_ON | DIFF_SINGLE | ADC_SC1_ADCH(31);
+    Master_Adc0_Config.STATUS1A = AIEN_OFF | DIFF_SINGLE | ADC_SC1_ADCH(0);
 
     
     ADC_Config_Alt(ADC0_BASE_PTR, &Master_Adc0_Config);  // config ADC
@@ -601,7 +601,7 @@ void ADC0_IRQHandler()
 						}
 						/* ------------------ UPDATE AXEL ----------------- */
 						
-						signalProcessing(LineScanImage0);
+						//signalProcessing(LineScanImage0);
 						//signalProcessing(LineScanImage1);
 						
 						/* ------------------------------------------------ */

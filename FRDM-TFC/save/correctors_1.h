@@ -1,7 +1,7 @@
 #ifndef CORRECTORS_H_
 #define CORRECTORS_H_
 
-#include "TFC\TFC_Types.h"
+
 
 /**
  * Header regroupant les principaux paramètres utilisés par les correcteurs
@@ -11,11 +11,19 @@
  */
 
 
-#define SPEED_DUTY_MAX (float)70.0
-#define SPEED_DUTY_MIN (float)40.0
-#define SPEED_OFFSET_HIGH (float)50.0
-#define SPEED_OFFSET_LOW  (float)40.0
-#define SPEED_NO_LINE (float)30.0
+#define SPEED_DUTY_MAX (float)70
+#define SPEED_DUTY_MIN (float)40
+#define SPEED_OFFSET_HIGH (float)50
+#define SPEED_OFFSET_LOW  (float)40
+#define SPEED_NOLINE (float)30
+
+/*
+#define SPEED_DUTY_MAX (float)50
+#define SPEED_DUTY_MIN (float)40
+#define SPEED_OFFSET_HIGH (float)50
+#define SPEED_OFFSET_LOW  (float)40
+#define SPEED_NOLINE (float)30
+*/
 
 /*
  * About the angle corrector (PI) :
@@ -53,7 +61,7 @@
  */
 
 /* PROPORTIONNAL PARAMETER */
-#define ANGLE_PROPORTIONNAL_FACTOR (float)0.55  //0.54
+#define ANGLE_PROPORTIONNAL_FACTOR (float)0.54  //0.54
 
 /* INTEGRATOR PARAMETER */
 #define ANGLE_INTEGRATOR_FACTOR (float)0.001
@@ -62,17 +70,21 @@
 #define ANGLE_INTEGRATOR_SUM_MIN -3500
 
 /* DERIVATOR PARAMETER */
-#define ANGLE_DERIVATOR_FACTOR (float)3.0
+#define ANGLE_DERIVATOR_FACTOR (float)1.5
 
 /* SUM PARAMETER */
-#define ANGLE_SUM_FACTOR (float)0.35 //0.2
+//#define ANGLE_SUM_FACTOR (float)0.2
+#define ANGLE_SUM_FACTOR (float)0.35
 
-#define ANGLE_NO_LINE (float)30.0
+
 
 
 #define ANGLE_SAMPLE_TIME 0x15924
 //#define ANGLE_SAMPLE_TIME 0x1D924
 //#define ANGLE_SAMPLE_TIME 0x9D924
+
+//Should be between -35 and 35
+#define ANGLE_NO_LINE 27
 
 /*
  * Trajectories manager
@@ -80,41 +92,11 @@
 /// Number of acquisition keep for trajectories computing
 //#define TRAJECTORIES_NUMBER_ACQUISITION 40
 
-
-///Enable type of corrector (TRUE OR FALSE)
-/* ---------------------------------------- */
-#define CORRECTOR_INTEGRAL 		FALSE
-#define CORRECTOR_DERIVATIVE 	TRUE
-/* ---------------------------------------- */
-
-typedef struct{
-	float coefLow;
-	float coefHigh;
-	float dutyLeft;
-	float dutyRight;
-}Speed;
-
-typedef struct{
-	float proportional;
-	float integral;
-	float derivative;
-	
-	int8 error;
-	int8 last_error;
-}Angle;
-
-typedef struct{
-	Angle angle;
-	Speed speed;
-}Corrector;
-
-
-
 void init_correctors(void);
-void angle_corrector(void);
+void angle_corrector(char error , uint8 proportional , uint8 integral , uint8 derivative);
 void angle_manager(void);
 void speed_manager(void);
-void setProportionalWithPWM(void);
+void init_sample_time(void);
 
 
 #endif /* CORRECTORS_H_ */

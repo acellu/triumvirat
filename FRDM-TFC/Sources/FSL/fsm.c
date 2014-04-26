@@ -2,6 +2,7 @@
 #include "TFC/TFC.h"
 #include "FSL/FSL.h"
 
+//#define NO_MOTOR
 
 extern Line line;
 
@@ -12,6 +13,9 @@ void init_fsm(void){
 	
 	/* Initialise the line variable */
 	init_line();
+	
+	/* Initialise correctors */
+	init_correctors();
 	
 	/* Set the Default duty cycle to 0 % duty cycle */
 	MOTOR_STOP;
@@ -69,7 +73,6 @@ void fsm(void){
 				angle_manager();
 			}
 			
-			//angle_manager();
 			
 			#ifndef NO_MOTOR
 			speed_manager();

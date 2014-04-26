@@ -10,36 +10,96 @@
 #include "FSL/FSL.h"
 #include "TFC/TFC.h"
 
-void FSL_Init() {
+void FSL_Init(void) {
 
 	TFC_Init();
 
 	init_ihm();
-	
+
 	init_sample_time();
 
 }
 
+/* ----------------------- TEST FUNCTION ------------------------ */
+
+void test_bibiche(void){
+	int i;
+	LED_CLEAR_ALL;
+
+	// 1. test moteur droit (arriere - stop - avant) [2s]
+	ihm_led(1,0,0,0);
+	TFC_HBRIDGE_ENABLE;
+	for (i = -100; i <= 100; i = i + 10) {
+		setMotorPWM(i,0);
+		TFC_Delay_mS(200);
+	}
+	MOTOR_STOP;
+
+	TFC_Delay_mS(1000);
+
+	// 2. test moteur gauche (arriere - stop - avant) [2s]
+	ihm_led(0,1,0,0);
+	for (i = -100; i <= 100; i = i + 10) {
+		setMotorPWM(0,i);
+		TFC_Delay_mS(200);
+	}
+	MOTOR_STOP;
+	TFC_HBRIDGE_DISABLE;
+
+	TFC_Delay_mS(1000);
+
+	// 3. test servo (gauche - milieu - droit) [2s]
+	ihm_led(0,0,1,0);
+	for (i = -30; i <= 30; i = i + 5) {
+		setServoAngle(i);
+		TFC_Delay_mS(400);
+	}
+	SERVO_ANGLE_INIT;
+
+	ihm_led(0,0,0,1);
+
+	TFC_Delay_mS(2000);
+	LED_CLEAR_ALL;
+}
+
+void test_vitesse(void){
+
+	LED_CLEAR_ALL;
+
+	TFC_Delay_mS(1500);
+	ihm_led(1,0,0,0);
+	TFC_Delay_mS(1500);
+	ihm_led(0,1,0,0);
+	TFC_Delay_mS(1500);
+	ihm_led(0,0,1,0);
+	TFC_Delay_mS(1500);
+	ihm_led(0,0,0,1);
+
+	TFC_HBRIDGE_ENABLE;
+	MOTOR_MAX;
+	TFC_Delay_mS(500);
+	MOTOR_STOP;
+	TFC_HBRIDGE_DISABLE;
+}
+
 /* ---------------------- CORRECTOR PARAM ----------------------- */
-float getParamPot(){
-	float valueParam = 0;
-	
+float getParamPot(int mul , int div){
+
 	float pot0 = TFC_ReadPot(0);
 	float pot1 = TFC_ReadPot(1);
-	
+
 	pot0++; //[-1.0 ; 1.0] --> [0 ; 2.0]
 	pot1++;
-	
-	valueParam = pot0 + pot1;
-	
+
+	return pot0 / div + pot1 * mul;
 }
 
 /* ------------------------- LABVIEW ---------------------------- */
 
 void labView(void) {
-	
+
 	uint32_t i=0;
-	
+
 	if(TFC_Ticker[0]>100 && LineScanImageReady==1)
 	{
 		TFC_Ticker[0] = 0;
@@ -63,29 +123,24 @@ void labView(void) {
 		}
 	}
 }
-/* -------------------------------------------------------------- */
 
 /* -------------------------- MOTOR ----------------------------- */
 
 /*
  * @param value pwm : [-100 ; 100] = [100% arriere ; 100% avant]
- * MotorA = Gauche [B]
- * MotorB = Droit [A]
+ * MotorA = Droit [A]
+ * MotorB = Gauche [B]
  */
-void setMotorPWM(float MotorA , float MotorB) {
+void setMotorPWM(float MotorD , float MotorG) {
 
-	MotorA /= 100.0; // [-100 ; 100] -> [-1.0 ; 1.0]
-	MotorB /= 100.0;
-
-	TFC_SetMotorPWM( MotorA , MotorB );
+	TFC_SetMotorPWM( MotorD / 100 , MotorG / 100 );
 }
-/* -------------------------------------------------------------- */
 
 
 /* -------------------------- SERVO ----------------------------- */
 
 /*
- * @param value : [-35 ; 35]
+ * @param value : [-30 ; 30]
  */
 void setServoAngle(float angle) {
 
@@ -93,61 +148,17 @@ void setServoAngle(float angle) {
 		angle = SERVO_ANGLE_MAX;
 	}
 
-	if(angle < -SERVO_ANGLE_MAX) {
-		angle = -SERVO_ANGLE_MAX;
+	if(angle < SERVO_ANGLE_MIN) {
+		angle = SERVO_ANGLE_MIN;
 	}
 
-	angle = angle / SERVO_ANGLE_MAX; // [-SERVO_ANGLE_MAX ; SERVO_ANGLE_MAX] -> [-1.0 ; 1.0]
-
 	/* Set angle to servo 0 */
-	TFC_SetServo(0, angle);
+	TFC_SetServo(0, angle / 30);
 
 	/* Set angle to servo 1 */
 	//TFC_SetServo(1, angle);
 }
-/* -------------------------------------------------------------- */
 
-int moyTab(uint16 *tab){
-	int i;
-	int sum = 0;
-	for (i = 0; i < 128; ++i) {
-		sum += tab[i];
-	}
-	sum = sum / 128;
-
-	return sum;
-}
-
-/* --------------------------------------------------------------- */
-
-void gradient(uint16 *acquisition_camera , uint16* line){
-	uint8 i = 0;
-
-	for (i=0; i<128; i++) {
-		//Calcul du gradient
-		if(i < 127)
-			line[i] = acquisition_camera[i] - acquisition_camera[i + 1];
-		else
-			line[127] = acquisition_camera[127]; //Dernière valeur aucun changement
-	}
-}
-
-/* -----------------------HOUGH------------------------------------ */
-
-void transformHough(uint16* line , uint16* echant_hough){
-	uint16 i = 0;
-	uint8 j = 0;
-
-	/* recuperation des échantillons par valeurs de 0 à 4096 (12bits) */
-
-	for (i = 0; i < 4096; ++i) {
-		for (j = 0; j < 128; ++j) {
-			if (line[j] == i) {
-				echant_hough[i]++;
-			}
-		}
-	}
-}
 
 /* ----------------------------PIT------------------------------- */
 

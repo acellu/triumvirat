@@ -16,10 +16,8 @@
 #define LED_FINISH_LINE_DETECTED	ihm_led(0,0,0,1)
 #define LED_CLEAR_ALL				ihm_led(-1,-1,-1,-1);
 
-void init_ihm ();
+void init_ihm (void);
 
-void ihm_led (int8 led0, int8 led1, int8 led2, int8 led3);
-
-uint8 ihm_switch(void);
+void ihm_led (int led0, int led1, int led2, int led3);
 
 #endif /* IHM_H_ */

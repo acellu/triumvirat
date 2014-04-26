@@ -91,5 +91,13 @@
 			<name>PREVIOUS_PROJECT_LOC12</name>
 			<value>PROJECT_LOC</value>
 		</variable>
+		<variable>
+			<name>PREVIOUS_PROJECT_LOC123</name>
+			<value>PROJECT_LOC</value>
+		</variable>
+		<variable>
+			<name>PREVIOUS_PROJECT_LOC1234</name>
+			<value>PROJECT_LOC</value>
+		</variable>
 	</variableList>
 </projectDescription>

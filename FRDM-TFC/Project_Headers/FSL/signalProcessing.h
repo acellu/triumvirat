@@ -7,6 +7,12 @@
 /*******************************
  * Signal processing variables *
  *******************************/
+/// Number of pixel
+#define NUMBER_OF_PIXEL  128
+/// Pixel value max - 12 bits
+#define  PIXEL_VALUE_MAX_12_BITS 4095
+/// Pixel value max - 8 bits
+#define PIXEL_VALUE_MAX_8_BITS 255
 /// First scanned value
 #define FIRST_SCANNED_VALUE 8
 /// Last scanned value
@@ -84,12 +90,36 @@ typedef enum{
 	null				/// For a null integer
 }Signe_e;
 
-/// Peak variable, used to know the location of every peak detected in the signal porcessing (used for finishline finding)
+/// Peak variable, used to know the location of every peak detected in the signal processing (used for finishline finding)
 typedef struct{
 	uint8 position;		/// Position of the peak
 	Signe_e signe;		/// Sign of the peak
 }Peak;
 
+
+/// Gradient
+typedef struct{
+	Peak peak[6];
+}Gradient;
+
+
+/// Linescan
+typedef struct{
+	uint8 pixel_min;
+	uint8 pixel_max;
+	
+	uint8 pixel_value_white;
+	uint8 pixel_value_black;
+	
+	uint8 peak_index_min;
+	uint8 peak_index_max;
+	uint8 peak_index_middle;
+	uint8 peak_width;
+	
+	Gradient gradient;
+	
+	int8 offset;
+}Linescan;
 
 
 
@@ -128,7 +158,6 @@ typedef struct{
 void gradient_compute(uint16 * acquisition_camera, int32 * gradient);
 void gradient_computeLineData(int32 * gradient);
 void gradient_moyenneMobile(int32 * signal, int32 * treated_signal);
-void gradient_computeLineData_v2(int32 * gradient);
 void signalProcessing(uint16 * acquisition_camera);
 void gradient_checkIfFinishLine_old(uint8 numberofPeak, Peak * peak);
 uint8 gradient_peakDetection(int32 * signal, Peak * peak, uint8 threshold);

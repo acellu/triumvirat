@@ -8,7 +8,7 @@
 #include "TFC/TFC.h"
 #include "FSL/FSL.h"
 
-void init_ihm (){
+void init_ihm (void){
 
 	/* Turn off all leds */
 	LED_CLEAR_ALL;
@@ -23,7 +23,7 @@ void init_ihm (){
  * Exemple : 
  * 		ihm_led(1,-1,-1,-1) -> allume la led 1 (gauche) et eteind les autres
  */
-void ihm_led (int8 led0, int8 led1, int8 led2, int8 led3){
+void ihm_led (int led0, int led1, int led2, int led3){
 
 	if (led0 == -1) {
 		TFC_BAT_LED0_OFF;
@@ -49,36 +49,6 @@ void ihm_led (int8 led0, int8 led1, int8 led2, int8 led3){
 		TFC_BAT_LED3_ON;
 	}
 
-}
-
-/*
- * @param : void
- * @return : decimal value [0 ; 15]
- * 
- * Example : 1 1 1 0 --> val = 14
- */
-
-uint8 ihm_switch(void){
-
-	uint8 dec = 0;
-
-	if (TFC_DIP_SWITCH0) {
-		dec += 1;
-	}
-
-	if (TFC_DIP_SWITCH1) {
-		dec += 2;
-	}
-
-	if (TFC_DIP_SWITCH2) {
-		dec += 4;
-	}
-
-	if (TFC_DIP_SWITCH3) {
-		dec += 8;
-	}
-
-	return dec;
 }
 
 

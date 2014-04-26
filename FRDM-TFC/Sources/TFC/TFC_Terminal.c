@@ -1,5 +1,5 @@
 #include "TFC\TFC.h"
-
+#include "FSL/correctors.h"
 
 //*****************************************************************
 //Terminal Configuration
@@ -7,6 +7,9 @@
 
 #define MAX_TERMINAL_LINE_CHARS 64
 #define MAX_TERMINAL_CMD_CHARS  32
+
+//Voir correctors.c
+extern Corrector corrector;
 
 
 typedef void (*TerminalCallback)(char *);
@@ -66,60 +69,61 @@ uint8_t CmdFound;
 void TerminalCmd_CD(char *arg)
 {
 
-	double correctorDerivative = 0;
+	int correctorDerivative = 0;
 	
-	TERMINAL_PRINTF("Current corrector derivative is %f\r\n",angle_derivator_factor);
+	TERMINAL_PRINTF("Current corrector derivative is %d\r\n",(int)(corrector.angle.derivative * 1000));
 
-	if(sscanf(arg,"%f",&correctorDerivative) == 2 && correctorDerivative >= 0)
+	if(sscanf(arg,"%d",&correctorDerivative) == 2)
 	{
-		TERMINAL_PRINTF("Setting corrector derivative to %f\r\n",correctorDerivative);	
 		
-		angle_derivator_factor = correctorDerivative;
+		TERMINAL_PRINTF("Setting corrector derivative to %d\r\n",correctorDerivative);	
+		
+		corrector.angle.derivative = (float)correctorDerivative / 1000;
 		
 	}
 	else
 	{
-		TERMINAL_PRINTF("Invalid corrector derivative string. There must be argument up to 0. Ex: CD 2.55\r\n");
+		TERMINAL_PRINTF("Invalid corrector derivative string. There must be argument up to 0. Ex: CD 2155 (2.155)\r\n");
 	}
 }
 
 void TerminalCmd_CP(char *arg)
 {
 
-	double correctorProportional = 0;
+	int correctorProportional = 0;
 	
-	TERMINAL_PRINTF("Current corrector proportional is %f\r\n",angle_proportionnal_factor);
+	TERMINAL_PRINTF("Current corrector proportional is %d\r\n",(int)(corrector.angle.proportional * 1000));
 
-	if(sscanf(arg,"%f",&correctorProportional) == 2 && correctorProportional >= 0)
+	if(sscanf(arg,"%d",&correctorProportional) == 2)
 	{
 		TERMINAL_PRINTF("Setting corrector proportional to %f\r\n",correctorProportional);	
 		
-		angle_proportionnal_factor = correctorProportional;
+		corrector.angle.proportional = (float)correctorProportional / 1000;
 		
 	}
 	else
 	{
-		TERMINAL_PRINTF("Invalid corrector proportional string. There must be argument up to 0. Ex: CP 2.55\r\n");
+		TERMINAL_PRINTF("Invalid corrector proportional string. There must be argument up to 0. Ex: CP 2155 (2.155)\r\n");
 	}
 }
 
 void TerminalCmd_CI(char *arg)
 {
 
-	double correctorIntegral = 0;
+	int correctorIntegral = 0;
 	
-	TERMINAL_PRINTF("Current corrector integral is %f\r\n",angle_integrator_factor);
+	TERMINAL_PRINTF("Current corrector integral is %d\r\n",(int)(corrector.angle.integral * 1000));
 
-	if(sscanf(arg,"%f",&correctorIntegral) == 2 && correctorIntegral >= 0)
+	if(sscanf(arg,"%d",&correctorIntegral) == 2)
 	{
-		TERMINAL_PRINTF("Setting corrector integral to %f\r\n",correctorIntegral);	
+		TERMINAL_PRINTF("Setting corrector integral to %d\r\n",correctorIntegral);	
 		
-		angle_integrator_factor = correctorIntegral;
+		corrector.angle.integral = (float)correctorIntegral / 1000;
 		
 	}
 	else
 	{
-		TERMINAL_PRINTF("Invalid corrector integral string. There must be argument up to 0. Ex: CI 2.55\r\n");
+		TERMINAL_PRINTF("Invalid corrector integral string. There must be argument up to 0. Ex: CI 2155 (2.155)\r\n");
 	}
 }
 

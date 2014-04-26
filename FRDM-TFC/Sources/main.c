@@ -2,12 +2,12 @@
 #include "TFC/TFC.h"
 #include "FSL/FSL.h"
 
+extern Corrector corrector;
+
 /*
  * TO DO : 
- * Adapter init_sample_time -> "correctors.c"
  * Adapter TFC_InitClock() -> "TFC.c"
  *
- *Faire du ménage dans les fichiers : "correctors" et "signalProcessing"
  */
 
 /********************************************************************/
@@ -20,20 +20,58 @@ int main (void){
 		// TFC_Task must be called in your main loop.  This keeps certain processing happy (I.E. Serial port queue check) 
 		TFC_Task();
 
+		/* FSM */
 		if(TFC_DIP_SWITCH0){
 			fsm();
 		}
 
+		/* FUNCTION TEST */
 		if (TFC_DIP_SWITCH1) {
-			labView();
+
+			if (TFC_PUSH_BUTTON_0_PRESSED) {
+				test_bibiche();
+			} else if (TFC_PUSH_BUTTON_1_PRESSED) {
+				test_vitesse();
+			} else {
+				labView();
+			}
 		}
 
+		/* CORRECTORS PARAMETER ON PUTTY */
 		if (TFC_DIP_SWITCH2) {
-			//void
+
+			if(TFC_Ticker[0]>=20)
+			{
+				TFC_Ticker[0] = 0; //reset the Ticker
+				TFC_Delay_mS(5000);
+
+				if (TFC_PUSH_BUTTON_0_PRESSED) {
+					corrector.angle.derivative = getParamPot(20,20);
+					TERMINAL_PRINTF("---> ANGLE_DERIVATOR_FACTOR : | %d | <--- (factor:1000)\n\r ",(int)(corrector.angle.derivative * 1000));
+
+				} else if (TFC_PUSH_BUTTON_1_PRESSED) {
+					corrector.angle.integral = getParamPot(20,20);
+					TERMINAL_PRINTF("---> ANGLE_INTEGATOR_FACTOR : | %d | <--- (factor:1000)\n\r ",(int)(corrector.angle.integral * 1000));
+
+				} else {
+					corrector.angle.proportional = getParamPot(20,20);
+					TERMINAL_PRINTF("---> ANGLE_POPORTIONAL_FACTOR : | %d | <--- (factor:1000)\n\r ",(int)(corrector.angle.proportional * 1000));
+				}
+			}
 		}
 
+		/* VOID */
 		if (TFC_DIP_SWITCH3) {
-			//void
+			if (TFC_PUSH_BUTTON_0_PRESSED) {
+				//void
+				
+			} else if (TFC_PUSH_BUTTON_1_PRESSED) {
+				//void
+				
+			} else {
+				//void
+				
+			}
 		}
 
 	}
@@ -157,5 +195,25 @@ int main(void)
 	}
 
 	return 0;
+}
+ */
+/*
+void mesure_servo(void){
+	int b0 = 0;
+	int b1 = 0;
+	if (TFC_PUSH_BUTTON_0_PRESSED) {
+		b0++;
+	}
+	if (TFC_PUSH_BUTTON_1_PRESSED) {
+		b1++;
+	}
+
+	TFC_Delay_mS(1000);	
+
+	float val = (float)b0 / 10 + (float)b1 /100;
+
+	TERMINAL_PRINTF("--- ANGLE 0.|X|X| ---> | %d | %d | :: | %d | ---\n\r ",b0,b1, (int)(val*100));
+
+	TFC_SetServo(0,-val);
 }
  */
