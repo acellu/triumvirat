@@ -87,7 +87,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="new/TFC_ADC_max.c|new/FSM_IR.h|new/FSM_IR.C|save/correctors_1.h|save/correctors_1.c|save/isr.h|save/signalProcessing.h|save/signalProcessing.c|save/correctors.c|save/correctors.h|save/main_old.c|save/camera.h|save/camera.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="IR/TFC_ADC_max.c|IR/FSM_IR.h|IR/FSM_IR.C|save/camera.h|new/FSM_IR.C|save/correctors.h|save/correctors_1.h|save/camera.c|save/main_old.c|new/TFC_ADC_max.c|save/signalProcessing.h|save/correctors_1.c|new/FSM_IR.h|save/isr.h|save/correctors.c|save/signalProcessing.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

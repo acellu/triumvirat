@@ -20,7 +20,9 @@ void capteurIR_acquisition(void){
 	
 	static unsigned char numero; // Variable situant le capteur en cours d acquisition
 	
-	static unsigned char Ab, Bb, Cb;
+	static unsigned char Ab, Bb, Cb; //Ab bit de poids faible de l'adresse envoyee au multiplexeur
+									 //Bb bit d'indice 2 de l'adresse envoyee au multiplexeur
+									 //Cb bit de poids fort de l'adresse envoyee au multiplexeur
 	
 		// Definition de la FSM
 	switch(etat){
