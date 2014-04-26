@@ -10,7 +10,7 @@ BiBiche 2.0 : Caractéristiques --> Poids sans pile = 2562 g
 							   --> Poids total = 3500 g
 							   --> Vitesse moyenne max = 4.62 m/s soit 16.63 km/h	
      
-Caméra supérieur = Channel 1 --> distance de vision : [L = 42 cm ; l = 42 cm ; e = 2cm] (33mm/pix)
+Caméra supérieur = Channel 1 --> distance de vision : [L = 50 cm ; l = 50 cm ; e = 2cm] (33mm/pix)
 							 --> largeur de la bande : 5 - 8 pixel
 							 --> centre : pixel n°70
 							 --> vision exploitable : [20 ; 105] pixel
