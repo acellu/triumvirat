@@ -20,4 +20,6 @@ void init_ihm (void);
 
 void ihm_led (int led0, int led1, int led2, int led3);
 
+void ihm_blink(int timeDelay);
+
 #endif /* IHM_H_ */

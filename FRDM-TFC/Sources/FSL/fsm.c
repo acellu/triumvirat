@@ -22,7 +22,7 @@ void init_fsm(void){
 	TFC_HBRIDGE_DISABLE;
 	
 	/* Centering servo channel 0 and 1 */
-	SERVO_ANGLE_INIT;
+	SERVO_INIT;
 	
 	/* Clear all led */
 	LED_CLEAR_ALL;
@@ -48,6 +48,14 @@ void fsm(void){
 		case Wait_start :
 			/* Boutton Start */
 			if(TFC_PUSH_BUTTON_0_PRESSED){  //If pressed...
+				
+			/* ------------- SURPRISE -------------- */
+				
+				if (TFC_DIP_SWITCH3) {
+					start_competition();
+				}
+			/* ------------------------------------- */
+				
 				LED_GO_ACCEPTED;
 				
 				/* Enable HBRIDGE useful for motor */

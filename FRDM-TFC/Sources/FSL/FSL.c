@@ -24,6 +24,8 @@ void FSL_Init(void) {
 
 void test_bibiche(void){
 	int i;
+	
+	ihm_blink(1500);
 	LED_CLEAR_ALL;
 
 	// 1. test moteur droit (arriere - stop - avant) [2s]
@@ -54,7 +56,7 @@ void test_bibiche(void){
 		setServoAngle(i);
 		TFC_Delay_mS(400);
 	}
-	SERVO_ANGLE_INIT;
+	SERVO_INIT;
 
 	ihm_led(0,0,0,1);
 
@@ -63,23 +65,45 @@ void test_bibiche(void){
 }
 
 void test_vitesse(void){
-
-	LED_CLEAR_ALL;
-
-	TFC_Delay_mS(1500);
-	ihm_led(1,0,0,0);
-	TFC_Delay_mS(1500);
-	ihm_led(0,1,0,0);
-	TFC_Delay_mS(1500);
-	ihm_led(0,0,1,0);
-	TFC_Delay_mS(1500);
-	ihm_led(0,0,0,1);
-
+	ihm_blink(1500);
 	TFC_HBRIDGE_ENABLE;
 	MOTOR_MAX;
-	TFC_Delay_mS(500);
+	TFC_Delay_mS(1000);
 	MOTOR_STOP;
 	TFC_HBRIDGE_DISABLE;
+	LED_CLEAR_ALL;
+}
+
+void start_competition(void){
+	ihm_blink(1500);
+	TFC_HBRIDGE_ENABLE;
+	setMotorPWM(-100,-100);
+	TFC_Delay_mS(300);
+	MOTOR_STOP;
+	TFC_HBRIDGE_DISABLE;
+	TFC_Delay_mS(3000);
+	LED_CLEAR_ALL;
+}
+
+void mesure_servo(){
+	
+	int b0 = 0;
+	int b1 = 0;
+
+	if (TFC_PUSH_BUTTON_0_PRESSED) {
+		b0++;
+	}
+	if (TFC_PUSH_BUTTON_1_PRESSED) {
+		b1++;
+	}
+
+	TFC_Delay_mS(1000);	
+
+	float val = (float)b0 / 10 + (float)b1 /100;
+
+	TERMINAL_PRINTF("--- ANGLE 0.|X|X| ---> | %d | %d | :: | %d | ---\n\r ",b0,b1, (int)(val*100));
+
+	TFC_SetServo(0,val);
 }
 
 /* ---------------------- CORRECTOR PARAM ----------------------- */

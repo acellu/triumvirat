@@ -51,6 +51,18 @@ void ihm_led (int led0, int led1, int led2, int led3){
 
 }
 
+void ihm_blink(int timeDelay){
+	LED_CLEAR_ALL;
+	TFC_Delay_mS(timeDelay);
+	ihm_led(1,0,0,0);
+	TFC_Delay_mS(timeDelay);
+	ihm_led(0,1,0,0);
+	TFC_Delay_mS(timeDelay);
+	ihm_led(0,0,1,0);
+	TFC_Delay_mS(timeDelay);
+	ihm_led(0,0,0,1);
+}
+
 
 /*
  * 

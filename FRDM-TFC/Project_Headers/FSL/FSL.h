@@ -15,14 +15,15 @@
 
 /* ------------- SERVO --------------- */
 
-#define SERVO_ANGLE_MAX (float)26.0
-#define SERVO_ANGLE_MIN (float)-19.0
-#define SERVO_ANGLE_INIT setServoAngle(0)
+#define SERVO_ANGLE_MAX 	(float)26.0
+#define SERVO_ANGLE_MIN 	(float)-19.0
+#define SERVO_ANGLE_INIT 	(float)1.8
+#define SERVO_INIT 			setServoAngle( SERVO_ANGLE_INIT )
 
 /* ------------- MOTOR --------------- */
 
-#define MOTOR_STOP setMotorPWM(0 , 0)
-#define MOTOR_MAX setMotorPWM(100 , 100)
+#define MOTOR_STOP 			setMotorPWM( 0 , 0 )
+#define MOTOR_MAX 			setMotorPWM( 100 , 100 )
 
 /* ----------------------------------- */
 
@@ -31,6 +32,10 @@ void FSL_Init(void);
 void test_vitesse(void);
 
 void test_bibiche(void);
+
+void start_competition(void);
+
+void mesure_servo(void);
 
 float getParamPot(int mul , int div);
 

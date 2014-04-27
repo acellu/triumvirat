@@ -60,18 +60,34 @@ int main (void){
 			}
 		}
 
-		/* VOID */
+		/* OTHER */
 		if (TFC_DIP_SWITCH3) {
+
 			if (TFC_PUSH_BUTTON_0_PRESSED) {
-				//void
-				
+				ihm_blink(5000);
+				SERVO_INIT;
+				TFC_HBRIDGE_ENABLE;
+				setMotorPWM(30,30);
+				TFC_Delay_mS(5000);
+				MOTOR_STOP;
+				TFC_Delay_mS(4000);
+				setMotorPWM(-35,-35);
+				TFC_Delay_mS(8000);
+				MOTOR_STOP;
+				TFC_HBRIDGE_DISABLE;
+
 			} else if (TFC_PUSH_BUTTON_1_PRESSED) {
-				//void
-				
+				TFC_HBRIDGE_ENABLE;
+				setMotorPWM(30 , 30);
+				TFC_Delay_mS(3000);
+				TFC_HBRIDGE_DISABLE;
+
 			} else {
 				//void
-				
+
 			}
+
+			mesure_servo();
 		}
 
 	}
@@ -197,23 +213,4 @@ int main(void)
 	return 0;
 }
  */
-/*
-void mesure_servo(void){
-	int b0 = 0;
-	int b1 = 0;
-	if (TFC_PUSH_BUTTON_0_PRESSED) {
-		b0++;
-	}
-	if (TFC_PUSH_BUTTON_1_PRESSED) {
-		b1++;
-	}
 
-	TFC_Delay_mS(1000);	
-
-	float val = (float)b0 / 10 + (float)b1 /100;
-
-	TERMINAL_PRINTF("--- ANGLE 0.|X|X| ---> | %d | %d | :: | %d | ---\n\r ",b0,b1, (int)(val*100));
-
-	TFC_SetServo(0,-val);
-}
- */
