@@ -56,6 +56,17 @@
 /// The version of function gradient_checkIfFinishLine (1 to 3)
 #define FINISH_LINE_VERSION 1
 
+/*************************
+ * Sensor detection *
+ *************************/
+/// Value of white
+#define WHITE 255
+/// Value of black
+#define BLACK 0
+/// Treshold between black and white
+#define TRESHOLD_SENSOR 128
+
+
 
 /// Variable for the last known direction of the line
 typedef enum{
@@ -93,6 +104,10 @@ typedef enum{
 /// Peak variable, used to know the location of every peak detected in the signal processing (used for finishline finding)
 typedef struct{
 	uint8 position;		/// Position of the peak
+	uint8 index_min;
+	uint8 index_max;
+	uint8 index_middle;
+	uint8 width;
 	Signe_e signe;		/// Sign of the peak
 }Peak;
 
@@ -100,26 +115,32 @@ typedef struct{
 /// Gradient
 typedef struct{
 	Peak peak[6];
+	int32 signal[128];
 }Gradient;
 
-
-/// Linescan
+///Pixel
 typedef struct{
 	uint8 pixel_min;
 	uint8 pixel_max;
-	
 	uint8 pixel_value_white;
 	uint8 pixel_value_black;
-	
-	uint8 peak_index_min;
-	uint8 peak_index_max;
-	uint8 peak_index_middle;
-	uint8 peak_width;
-	
+}Pixel;
+
+
+///Linescan
+typedef struct{
+	//Pixel pixel;
+	//vuint16* acquisition;
+	uint16 acquisition[128];
 	Gradient gradient;
-	
 	int8 offset;
 }Linescan;
+
+///Sensor
+typedef struct{
+	uint8 index[8]; //value between : [0 - 255]
+	uint8 treshold; //treshold between black and white
+}Sensor;
 
 
 
@@ -163,6 +184,8 @@ void gradient_checkIfFinishLine_old(uint8 numberofPeak, Peak * peak);
 uint8 gradient_peakDetection(int32 * signal, Peak * peak, uint8 threshold);
 void gradient_moyenneMobile3(int32 * signal, int32 * treated_signal);
 void init_line(void);
+void init_linescan(uint8 channel , uint16 * line);
+void init_sensor(void);
 void gradient_checkIfFinishLine(uint8 numberofPeak, Peak * peak);
 int gradient_checkIfFinishLine_condition(int8 firstPeak, int8 lastPeak, Peak * peak, uint8 version);
 
