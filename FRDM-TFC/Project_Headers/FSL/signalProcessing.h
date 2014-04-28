@@ -3,6 +3,11 @@
 
 #include "TFC/TFC_arm_cm0.h"
 
+/********************************
+ * 			IR sensor           *
+ ********************************/
+// Masque emplacement des bits de controle du mux
+#define CTRL_MUX_MASK 0x0C40
 
 /*******************************
  * Signal processing variables *

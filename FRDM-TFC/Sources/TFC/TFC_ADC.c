@@ -246,6 +246,7 @@ void ADC_Read_Cal(ADC_MemMapPtr, tADC_Cal_Blk *);
 #define ADC_STATE_CAPTURE_POT_1			        2
 #define ADC_STATE_CAPTURE_BATTERY_LEVEL			3
 #define ADC_STATE_CAPTURE_LINE_SCAN		        4
+#define ADC_STATE_CAPTURE_IR_SENSOR				5
 
 
 volatile uint16_t PotADC_Value[2];
@@ -622,6 +623,12 @@ void ADC0_IRQHandler()
 		}
 
 		break;
+		
+	/* ------------------ UPDATE GUILLAUME ----------------- */	
+	case ADC_STATE_CAPTURE_IR_SENSOR:
+			
+		break;
+	/* ----------------------------------------------------- */
 
 	}
 

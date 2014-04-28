@@ -33,7 +33,20 @@ void init_linescan(uint8 channel , uint16 * line){
 }
 
 void init_sensor(void){
-	//TO DO
+		/* Configuration GPIO */
+		//Configuration de PTC0 en pin singled-ended de ADC (Data)
+		PORTC_PCR0 = PORT_PCR_MUX(0);
+		//Configuration de PTC6, PTC10 et PTC11 en pin libres (Adresse)
+		PORTC_PCR6 = PORT_MCR_MUX(1);
+		PORTC_PCR10 = PORT_MCR_MUX(1);
+		PORTC_PCR11 = PORT_MCR_MUX(1);
+		
+		//Set PTC6, PTC10 et PTC11 as Output (adresse)
+		GPIOC_PDDR |= CTRL_MUX_MASK;
+		//Set PTC0 as Output (data)
+		GPIOC_PDDR |= 0x0001;
+		
+		
 }
 
 
