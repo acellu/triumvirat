@@ -17,6 +17,10 @@ void FSL_Init(void) {
 	init_ihm();
 
 	init_sample_time();
+	
+	init_sensor();
+	
+	init_irSensor();
 
 }
 

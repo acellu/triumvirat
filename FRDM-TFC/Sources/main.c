@@ -4,12 +4,6 @@
 
 extern Corrector corrector;
 
-/*
- * TO DO : 
- * Adapter TFC_InitClock() -> "TFC.c"
- *
- */
-
 /********************************************************************/
 int main (void){
 

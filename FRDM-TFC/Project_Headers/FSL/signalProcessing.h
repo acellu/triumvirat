@@ -3,12 +3,6 @@
 
 #include "TFC/TFC_arm_cm0.h"
 
-/********************************
- * 			IR sensor           *
- ********************************/
-// Masque emplacement des bits de controle du mux
-#define CTRL_MUX_MASK 0x0C40
-
 /*******************************
  * Signal processing variables *
  *******************************/
@@ -143,8 +137,8 @@ typedef struct{
 
 ///Sensor
 typedef struct{
-	uint8 index[8]; //value between : [0 - 255]
-	uint8 treshold; //treshold between black and white
+	uint16 index[8]; //value between : [0 - 255]
+	uint16 treshold; //treshold between black and white
 }Sensor;
 
 
@@ -193,5 +187,6 @@ void init_linescan(uint8 channel , uint16 * line);
 void init_sensor(void);
 void gradient_checkIfFinishLine(uint8 numberofPeak, Peak * peak);
 int gradient_checkIfFinishLine_condition(int8 firstPeak, int8 lastPeak, Peak * peak, uint8 version);
+void irSensorProssesing(uint16 * irSensor);
 
 #endif /* SIGNALPROCESSING_H_ */

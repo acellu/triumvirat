@@ -12,6 +12,7 @@
 #include "FSL/fsm.h"
 #include "FSL/correctors.h"
 #include "FSL/signalProcessing.h"
+#include "FSL/irSensor.h"
 
 /* ------------- SERVO --------------- */
 

@@ -1,4 +1,5 @@
 #include "TFC\TFC.h"
+#include "FSL/FSL.h"
 
 
 #define TFC_POT_0_ADC_CHANNEL		13
@@ -6,6 +7,7 @@
 #define TFC_BAT_SENSE_CHANNEL		4
 #define TFC_LINESCAN0_ADC_CHANNEL	6
 #define TFC_LINESCAN1_ADC_CHANNEL	7
+#define TFC_IR_SENSOR_ADC_CHANNEL   14
 
 #define ADC_MAX_CODE    (4095)
 
@@ -255,6 +257,10 @@ static uint8_t 	CurrentADC_State =	ADC_STATE_INIT;
 
 volatile uint8_t CurrentLineScanPixel = 0;
 volatile uint8_t CurrentLineScanChannel = 0;
+
+
+uint16 irSensor[8];
+volatile uint8 CurrentIrSensor;
 
 void InitADC0();
 
@@ -511,7 +517,7 @@ void ADC0_IRQHandler()
 
 		PotADC_Value[1] = ADC0_RA;
 		ADC0_CFG2  |= ADC_CFG2_MUXSEL_MASK; //Select the B side of the mux
-		ADC0_SC1A  =  TFC_BAT_SENSE_CHANNEL| ADC_SC1_AIEN_MASK;
+		ADC0_SC1A  =  TFC_BAT_SENSE_CHANNEL| ADC_SC1_AIEN_MASK; // ADC_SC1_AIEN_MASK : interrupt enable
 		CurrentADC_State = ADC_STATE_CAPTURE_BATTERY_LEVEL;
 
 		break;
@@ -533,6 +539,8 @@ void ADC0_IRQHandler()
 
 		CurrentLineScanPixel = 0;
 		CurrentLineScanChannel = 0;
+		CurrentIrSensor = 0;
+
 		CurrentADC_State = ADC_STATE_CAPTURE_LINE_SCAN;
 		ADC0_CFG2  |= ADC_CFG2_MUXSEL_MASK; //Select the B side of the mux
 		ADC0_SC1A  =  TFC_LINESCAN0_ADC_CHANNEL | ADC_SC1_AIEN_MASK;
@@ -553,9 +561,11 @@ void ADC0_IRQHandler()
 			else
 			{
 				LineScanImage1WorkingBuffer[CurrentLineScanPixel] = ADC0_RA;
-				ADC0_SC1A  =  TFC_LINESCAN0_ADC_CHANNEL | ADC_SC1_AIEN_MASK;
+				ADC0_SC1A  =  TFC_IR_SENSOR_ADC_CHANNEL | ADC_SC1_AIEN_MASK;
 				CurrentLineScanChannel = 0;
 				CurrentLineScanPixel++;
+
+				CurrentADC_State = ADC_STATE_CAPTURE_IR_SENSOR;
 
 				TAOS_CLK_LOW;
 				for(Junk = 0;Junk<50;Junk++)
@@ -623,12 +633,65 @@ void ADC0_IRQHandler()
 		}
 
 		break;
-		
-	/* ------------------ UPDATE GUILLAUME ----------------- */	
+
+		/* ------------------ UPDATE GUILLAUME ----------------- */
 	case ADC_STATE_CAPTURE_IR_SENSOR:
-			
+		irSensor[CurrentIrSensor] = ADC0_RA;
+		ADC0_SC1A  =  TFC_LINESCAN0_ADC_CHANNEL | ADC_SC1_AIEN_MASK;
+		CurrentADC_State = ADC_STATE_CAPTURE_LINE_SCAN;
+
+		switch(CurrentIrSensor){
+		case 0 :
+			IR_SENSOR_ADDR_RESET;
+			IR_SENSOR_ADDR_1;
+			CurrentIrSensor = 1;
+			break;
+		case 1 :
+			IR_SENSOR_ADDR_RESET;
+			IR_SENSOR_ADDR_2;
+			CurrentIrSensor = 2;
+			break;
+		case 2 :
+			IR_SENSOR_ADDR_RESET;
+			IR_SENSOR_ADDR_3;
+			CurrentIrSensor = 3;
+			break;
+		case 3 :
+			IR_SENSOR_ADDR_RESET;
+			IR_SENSOR_ADDR_4;
+			CurrentIrSensor = 4;
+			break;
+		case 4 :
+			IR_SENSOR_ADDR_RESET;
+			IR_SENSOR_ADDR_5;
+			CurrentIrSensor = 5;
+			break;
+		case 5 :
+			IR_SENSOR_ADDR_RESET;
+			IR_SENSOR_ADDR_6;
+			CurrentIrSensor = 6;
+			break;
+		case 6 :
+			IR_SENSOR_ADDR_RESET;
+			IR_SENSOR_ADDR_7;
+			CurrentIrSensor = 7;
+			break;
+		case 7 :
+			IR_SENSOR_ADDR_RESET;
+			IR_SENSOR_ADDR_0;
+			CurrentIrSensor = 0;
+			irSensorProssesing(irSensor);
+			break;
+		default :
+			IR_SENSOR_ADDR_RESET;
+			IR_SENSOR_ADDR_0;
+			CurrentIrSensor = 0;
+			break;
+		}
+		
+
 		break;
-	/* ----------------------------------------------------- */
+		/* ----------------------------------------------------- */
 
 	}
 
