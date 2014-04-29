@@ -21,8 +21,17 @@
 #define IR_SENSOR_ADDR_6 GPIOC_PDOR |= 0x0C00
 #define IR_SENSOR_ADDR_7 GPIOC_PDOR |= 0x0C40
 
+///Sensor
+typedef struct{
+	uint16 index[8]; //value between : [0 - 255]
+	uint16 treshold; //treshold between black and white
+	uint8 irSensorReady; //bool true when array's value is ready
+}Sensor;
+
 void init_irSensor(void);
 
 void init_sensor(void);
+
+void irSensorProcessing(uint16 * irSensor);
 
 #endif /* IRSENSOR_H_ */

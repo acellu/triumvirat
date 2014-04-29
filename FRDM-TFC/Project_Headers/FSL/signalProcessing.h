@@ -137,15 +137,6 @@ typedef struct{
 	int8 offset;
 }Linescan;
 
-///Sensor
-typedef struct{
-	uint8 index[8]; //value between : [0 - 255]
-	uint8 treshold; //treshold between black and white
-	uint8 irSensorReady; //bool true when array's value is ready
-}Sensor;
-
-
-
 /**
  * DEBUG USING LCD
  * 
@@ -190,6 +181,5 @@ void init_linescan(uint8 channel , uint16 * line);
 void init_sensor(void);
 void gradient_checkIfFinishLine(uint8 numberofPeak, Peak * peak);
 int gradient_checkIfFinishLine_condition(int8 firstPeak, int8 lastPeak, Peak * peak, uint8 version);
-void irSensorProcessing(uint16 * irSensor);
 
 #endif /* SIGNALPROCESSING_H_ */

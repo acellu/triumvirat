@@ -11,9 +11,6 @@ Line line;
 // Linescan variable
 //Linescan linescan[2];
 
-// Sensor variable
-Sensor sensor;
-
 void init_line(void){
 	line.found = 0;
 	line.isFinishLine = 0;
@@ -32,6 +29,21 @@ void init_linescan(uint8 channel , uint16 * line){
 */
 
 
+void gradient_compute(uint16 * acquisition_camera, int32 * gradient){
+	uint8 i = 0;
+
+	for (i=0; i<128; i++) {
+		//Calcul du gradient
+		if(i < 127) {
+			gradient[i] = acquisition_camera[i] - acquisition_camera[i + 1];
+		}
+		else {
+			gradient[127] = 0; //Dernière valeur aucun changement (0)
+		}
+	}
+}
+
+
 
 void signalProcessing(uint16 * acquisition_camera){
 
@@ -48,54 +60,6 @@ void signalProcessing(uint16 * acquisition_camera){
 
 }
 
-void irSensorProssesing(uint16 * irSensor){
-	//Copie des donnees dans la structure
-	uint8 i;
-	for(i=0; i<8; i++){
-		sensor.index[i] = irSensor[i];
-	}
-	
-	//LED DEBUG
-	if(sensor.index[4] < sensor.treshold){
-		ihm_led(1, 0, 0, 0);
-	}
-	else{
-		ihm_led(-1, 0, 0, 0);
-	}
-	if(sensor.index[5] < sensor.treshold){
-		ihm_led(0, 1, 0, 0);
-	}
-	else{
-		ihm_led(0, -1, 0, 0);
-	}
-	if(sensor.index[6] < sensor.treshold){
-		ihm_led(0, 0, 1, 0);
-	}
-	else{
-		ihm_led(0, 0, -1, 0);
-	}
-	if(sensor.index[7] < sensor.treshold){
-		ihm_led(0, 0, 0, 1);
-	}
-	else{
-		ihm_led(0, 0, 0, -1);
-	}
-}
-
-
-void gradient_compute(uint16 * acquisition_camera, int32 * gradient){
-	uint8 i = 0;
-
-	for (i=0; i<128; i++) {
-		//Calcul du gradient
-		if(i < 127) {
-			gradient[i] = acquisition_camera[i] - acquisition_camera[i + 1];
-		}
-		else {
-			gradient[127] = 0; //Dernière valeur aucun changement (0)
-		}
-	}
-}
 
 void gradient_computeLineData(int32 * gradient){
 
