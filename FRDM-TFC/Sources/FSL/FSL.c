@@ -128,7 +128,7 @@ float getParamPot(int mul , int div){
 
 void labView(uint8 boolLinescan) {
 
-	uint32_t i=0;
+	uint8_t i=0,j=0;
 
 	if(TFC_Ticker[0]>100 && LineScanImageReady==1)
 	{
@@ -137,11 +137,19 @@ void labView(uint8 boolLinescan) {
 
 		TERMINAL_PRINTF("\r\n");
 		TERMINAL_PRINTF("L:");
-		
-		if (!boolLinescan) {
-			
-		}
 
+		if (boolLinescan == 0) {
+			/* affichage sous labview de 8 capteurs dans un tableau de 128 */
+			for (i = 0; i < 128; i++) {
+				if (i < 16 * (j+1)) {
+					LineScanImage0[i] = sensor.index[j];
+				}
+				if (i == (16 * (j+1)) - 1) {
+					j++;
+				}
+			}
+			j = 0;
+		}
 
 		for(i=0;i<128;i++)
 		{

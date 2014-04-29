@@ -14,7 +14,7 @@
 /// Pixel value max - 8 bits
 #define PIXEL_VALUE_MAX_8_BITS 255
 /// First scanned value
-#define FIRST_SCANNED_VALUE 8
+#define FIRST_SCANNED_VALUE 10
 /// Last scanned value
 #define LAST_SCANNED_VALUE 120
 /// Minimum value of the gradient to be detected as a transition
@@ -28,9 +28,9 @@
  * Line detection *
  ******************/
 /// Minimum width of the line to be accepted as found
-#define MINIMUM_WIDTH 20 //22
+#define MINIMUM_WIDTH 5 //22
 /// Maximum width of the line to be accepted as found
-#define MAXIMUM_WIDTH 35 //32
+#define MAXIMUM_WIDTH 15 //35
 /// Maximum line movement allowed in pixel per image(if actual line - old line > this varaible, the echantillon will be rejected)
 #define MAXIMUM_LINE_MOVEMENT_ALLOWED 80
 /// Threshold for setting the line as 'left' in the direction variable

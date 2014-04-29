@@ -19,6 +19,7 @@ void init_line(void){
 	line.scan_number = 0;
 	line.width = 0;
 }
+
 /*
 void init_linescan(uint8 channel , uint16 * line){
 	uint8 i;
@@ -113,6 +114,7 @@ void gradient_computeLineData(int32 * gradient){
 
 		line.isFinishLine = 0;
 		line.found = 1;
+		
 		line.width = data.minPosition - data.maxPosition;
 
 		//Checking if the deplacement of the line was not too fast
