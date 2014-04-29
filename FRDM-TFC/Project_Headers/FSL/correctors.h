@@ -101,6 +101,7 @@ typedef struct{
 	
 	int8 error;
 	int8 last_error;
+	float integral_sum;
 }Angle;
 
 typedef struct{

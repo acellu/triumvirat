@@ -4,6 +4,7 @@
 /// // Global variables
 // Position of the middle of the line (255 = not found)
 extern Line line;
+extern Sensor sensor;
 
 Corrector corrector;
 
@@ -21,6 +22,7 @@ void init_correctors(void){
 
 	corrector.angle.error = 0;
 	corrector.angle.last_error = 0;
+	corrector.angle.integral_sum = 0;
 }
 
 /**
@@ -66,17 +68,17 @@ void speed_manager(void){
  */
 
 void angle_manager(void){
-	if(line.found == 1){
-		corrector.angle.error = line.position - 64;
+	if(sensor.isFound == 1){
+		corrector.angle.error = -sensor.error;
 		angle_corrector(); 
 	}
 
 	else{
-		if(line.last_direction == right){
+		if(sensor.lastDirection == right){
 			setServoAngle(ANGLE_NO_LINE);
 		}
-		else if(line.last_direction == middle){
-			setServoAngle(0);
+		else if(sensor.lastDirection == middle){
+			setServoAngle(SERVO_ANGLE_INIT);
 		}
 		else{
 			setServoAngle(-ANGLE_NO_LINE);
@@ -88,22 +90,21 @@ void angle_corrector(){
 
 	float angle_order = 0;
 
-	setProportionalWithPWM();
+	//setProportionalWithPWM();
 	angle_order += corrector.angle.proportional * corrector.angle.error;
 
 	if (CORRECTOR_INTEGRAL) {
-		float angle_sum = 0;
-		angle_sum = ANGLE_SUM_FACTOR * corrector.angle.error;
+		corrector.angle.integral_sum += ANGLE_SUM_FACTOR * corrector.angle.error;
 
 		//Checking if it's still in the max and min defined
-		if(angle_sum > ANGLE_INTEGRATOR_SUM_MAX){
-			angle_sum = ANGLE_INTEGRATOR_SUM_MAX;
+		if(corrector.angle.integral_sum > ANGLE_INTEGRATOR_SUM_MAX){
+			corrector.angle.integral_sum = ANGLE_INTEGRATOR_SUM_MAX;
 		}
-		else if(angle_sum <  ANGLE_INTEGRATOR_SUM_MIN){
-			angle_sum = ANGLE_INTEGRATOR_SUM_MIN;
+		else if(corrector.angle.integral_sum <  ANGLE_INTEGRATOR_SUM_MIN){
+			corrector.angle.integral_sum = ANGLE_INTEGRATOR_SUM_MIN;
 		}
 
-		angle_order += corrector.angle.integral * angle_sum;
+		angle_order += corrector.angle.integral * corrector.angle.integral_sum;
 	}
 
 	if (CORRECTOR_DERIVATIVE) {

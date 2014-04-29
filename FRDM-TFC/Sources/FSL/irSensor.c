@@ -76,7 +76,7 @@ void irSensorProcessing(uint16 * irSensor){
 	//Sinon, la bande est condiérée comme valide
 	else{
 		//Cacul de la position du centre
-		sensor.error = (indexLastBlack*10 - indexFirstBlack*10) - 35;
+		sensor.error = (indexLastBlack*10 + indexFirstBlack*10)/2 - 35;
 		
 		//Memoristaion de la direction
 		if(sensor.error < -15){

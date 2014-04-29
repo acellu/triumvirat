@@ -5,6 +5,7 @@
 //#define NO_MOTOR
 
 extern Line line;
+extern Sensor sensor;
 
 /*
  * Fonction d'initialisation
