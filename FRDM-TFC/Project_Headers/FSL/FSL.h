@@ -39,7 +39,7 @@ void mesure_servo(void);
 
 float getParamPot(int mul , int div);
 
-void labView(void);
+void labView(uint8 boolLinescan);
 
 void setMotorPWM(float MotorA , float MotorB);
 

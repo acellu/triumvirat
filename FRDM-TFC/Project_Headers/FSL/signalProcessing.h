@@ -94,6 +94,7 @@ typedef struct{
 	uint8 found;		/// Equal 0 is the line is not found, 1 if the line is found
 	uint8 width;		/// Width of the line found
 	Direction last_direction;	///Last know direction of the line
+	Direction next_direction;	///Next direction
 	LineData linedata;	/// Use for debug purpose, linedata have all the data used to compute the other variables of the line Structure
 	uint8 isFinishLine;	/// Equal 1 if the current line scanned is a finish line, if not, it will be equal to 0
 	uint32 scan_number; /// Count each acquisition made by the camera from the beginning, can be used to know the up time of the car
@@ -145,6 +146,7 @@ typedef struct{
 typedef struct{
 	uint8 index[8]; //value between : [0 - 255]
 	uint8 treshold; //treshold between black and white
+	uint8 irSensorReady; //bool true when array's value is ready
 }Sensor;
 
 

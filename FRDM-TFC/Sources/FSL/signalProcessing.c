@@ -9,7 +9,7 @@
 Line line;
 
 // Linescan variable
-Linescan linescan[2];
+//Linescan linescan[2];
 
 // Sensor variable
 Sensor sensor;
@@ -22,33 +22,28 @@ void init_line(void){
 	line.scan_number = 0;
 	line.width = 0;
 }
-
+/*
 void init_linescan(uint8 channel , uint16 * line){
 	uint8 i;
 	for (i = 0; i < 128; ++i) {
 		linescan[channel].acquisition[i] = line[i];
 	}
-
-	//signalProcessing(linescan[channel].acquisition);
 }
-
+*/
 void init_sensor(void){
-		/* Configuration GPIO */
-		//Configuration de PTC0 en pin singled-ended de ADC (Data)
-		PORTC_PCR0 = PORT_PCR_MUX(0);
-		//Configuration de PTC6, PTC10 et PTC11 en pin libres (Adresse)
-		PORTC_PCR6 = PORT_MCR_MUX(1);
-		PORTC_PCR10 = PORT_MCR_MUX(1);
-		PORTC_PCR11 = PORT_MCR_MUX(1);
-		
-		//Set PTC6, PTC10 et PTC11 as Output (adresse)
-		GPIOC_PDDR |= CTRL_MUX_MASK;
-		//Set PTC0 as Output (data)
-		GPIOC_PDDR |= 0x0001;
-		
-		
-}
+	/* Configuration GPIO */
+	//Configuration de PTC0 en pin singled-ended de ADC (Data)
+	PORTC_PCR0 = PORT_PCR_MUX(0);
+	//Configuration de PTC6, PTC10 et PTC11 en pin libres (Adresse)
+	PORTC_PCR6 = PORT_MCR_MUX(1);
+	PORTC_PCR10 = PORT_MCR_MUX(1);
+	PORTC_PCR11 = PORT_MCR_MUX(1);
 
+	//Set PTC6, PTC10 et PTC11 as Output (adresse)
+	GPIOC_PDDR |= CTRL_MUX_MASK;
+	//Set PTC0 as Output (data)
+	GPIOC_PDDR |= 0x0001;
+}
 
 
 void signalProcessing(uint16 * acquisition_camera){
@@ -140,7 +135,7 @@ void gradient_computeLineData(int32 * gradient){
 			line.position = ((data.minPosition + data.maxPosition) / 2);
 		}
 		else{
-
+			//void
 		}
 
 		if(line.position > THRESHOLD_RIGHT)
