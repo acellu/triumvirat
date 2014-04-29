@@ -14,6 +14,9 @@ void init_correctors(void){
 	corrector.speed.coefHigh = (SPEED_DUTY_MAX - SPEED_DUTY_MIN)/(64 - SPEED_OFFSET_HIGH);
 	corrector.speed.dutyLeft = 0;
 	corrector.speed.dutyRight = 0;
+	
+	corrector.speed.brake = SPEED_BRAKE;
+	corrector.speed.max = SPEED_MAX;
 
 	// Angle corrector variables
 	corrector.angle.proportional = ANGLE_PROPORTIONNAL_FACTOR;
@@ -72,7 +75,7 @@ void angle_manager(void){
 		corrector.angle.error = -sensor.error;
 		angle_corrector(); 
 	}
-
+/*
 	else{
 		if(sensor.lastDirection == right){
 			setServoAngle(ANGLE_NO_LINE);
@@ -84,6 +87,7 @@ void angle_manager(void){
 			setServoAngle(-ANGLE_NO_LINE);
 		}
 	}
+	*/
 }
 
 void angle_corrector(){

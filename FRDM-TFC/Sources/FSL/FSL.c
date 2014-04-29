@@ -71,13 +71,27 @@ void test_bibiche(void){
 }
 
 void test_vitesse(void){
-	ihm_blink(1500);
+	ihm_blink(1000);
 	TFC_HBRIDGE_ENABLE;
 	MOTOR_MAX;
 	TFC_Delay_mS(1000);
 	MOTOR_STOP;
 	TFC_HBRIDGE_DISABLE;
 	LED_CLEAR_ALL;
+}
+
+void bibiche_surprise(void){
+	ihm_blink(5000);
+	SERVO_INIT;
+	TFC_HBRIDGE_ENABLE;
+	setMotorPWM(30,30);
+	TFC_Delay_mS(5000);
+	MOTOR_STOP;
+	TFC_Delay_mS(4000);
+	setMotorPWM(-35,-35);
+	TFC_Delay_mS(8000);
+	MOTOR_STOP;
+	TFC_HBRIDGE_DISABLE;
 }
 
 void start_competition(void){

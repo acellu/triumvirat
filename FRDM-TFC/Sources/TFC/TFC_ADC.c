@@ -600,11 +600,7 @@ void ADC0_IRQHandler()
 
 				LineScanImage0 = &LineScanImage0Buffer[0][0];
 				LineScanImage1 = &LineScanImage1Buffer[0][0];
-
-				/* ------------------ UPDATE AXEL ----------------- */
-				//linescan[0].acquisition = &LineScanImage0Buffer[0][0];
-				//linescan[1].acquisition = &LineScanImage1Buffer[0][0];
-				/* ------------------------------------------------ */
+				
 			}
 			else
 			{
@@ -612,17 +608,12 @@ void ADC0_IRQHandler()
 				LineScanImage0WorkingBuffer = &LineScanImage0Buffer[0][0];
 				LineScanImage1WorkingBuffer = &LineScanImage1Buffer[0][0];
 
-				/* ------------------ UPDATE AXEL ----------------- */
-				//linescan[0].acquisition = &LineScanImage0Buffer[1][0];
-				//linescan[1].acquisition = &LineScanImage1Buffer[1][0];
-				/* ------------------------------------------------ */
-
 				LineScanImage0 = &LineScanImage0Buffer[1][0];
 				LineScanImage1 = &LineScanImage1Buffer[1][0];
 			}
 			/* ------------------ UPDATE AXEL ----------------- */
 			//signalProcessing(LineScanImage0);
-			signalProcessing(LineScanImage1);
+			//signalProcessing(LineScanImage1);
 			/* ------------------------------------------------ */
 			LineScanImageReady = TRUE;
 		}

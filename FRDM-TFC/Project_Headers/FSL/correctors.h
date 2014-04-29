@@ -53,7 +53,10 @@
  */
 
 /* PROPORTIONNAL PARAMETER */
-#define ANGLE_PROPORTIONNAL_FACTOR (float)0.55  //0.54
+#define ANGLE_PROPORTIONNAL_FACTOR (float)0.3  //0.54
+
+/* DERIVATOR PARAMETER */
+#define ANGLE_DERIVATOR_FACTOR (float)0.5
 
 /* INTEGRATOR PARAMETER */
 #define ANGLE_INTEGRATOR_FACTOR (float)0.001
@@ -61,11 +64,9 @@
 #define ANGLE_INTEGRATOR_SUM_MAX 3500
 #define ANGLE_INTEGRATOR_SUM_MIN -3500
 
-/* DERIVATOR PARAMETER */
-#define ANGLE_DERIVATOR_FACTOR (float)3.0
-
 /* SUM PARAMETER */
 #define ANGLE_SUM_FACTOR (float)0.35 //0.2
+
 
 #define ANGLE_NO_LINE (float)30.0
 
@@ -92,6 +93,9 @@ typedef struct{
 	float coefHigh;
 	float dutyLeft;
 	float dutyRight;
+	
+	float brake;
+	float max;
 }Speed;
 
 typedef struct{

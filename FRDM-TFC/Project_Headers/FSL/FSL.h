@@ -13,6 +13,7 @@
 #include "FSL/correctors.h"
 #include "FSL/signalProcessing.h"
 #include "FSL/irSensor.h"
+#include "FSL/speed.h"
 
 /* ------------- SERVO --------------- */
 
@@ -33,6 +34,8 @@ void FSL_Init(void);
 void test_vitesse(void);
 
 void test_bibiche(void);
+
+void bibiche_surprise(void);
 
 void start_competition(void);
 
