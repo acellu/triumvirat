@@ -23,4 +23,6 @@
 
 void init_irSensor(void);
 
+void init_sensor(void);
+
 #endif /* IRSENSOR_H_ */

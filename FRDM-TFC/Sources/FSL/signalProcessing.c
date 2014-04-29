@@ -31,13 +31,6 @@ void init_linescan(uint8 channel , uint16 * line){
 }
 */
 
-void init_sensor(void){
-	uint8 i;
-	for (i = 0; i < 8; i++) {
-		sensor.index[i] = 4095;
-	}
-	sensor.treshold = 175;
-}
 
 
 void signalProcessing(uint16 * acquisition_camera){

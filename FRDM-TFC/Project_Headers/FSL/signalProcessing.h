@@ -190,6 +190,6 @@ void init_linescan(uint8 channel , uint16 * line);
 void init_sensor(void);
 void gradient_checkIfFinishLine(uint8 numberofPeak, Peak * peak);
 int gradient_checkIfFinishLine_condition(int8 firstPeak, int8 lastPeak, Peak * peak, uint8 version);
-void irSensorProssesing(uint16 * irSensor);
+void irSensorProcessing(uint16 * irSensor);
 
 #endif /* SIGNALPROCESSING_H_ */

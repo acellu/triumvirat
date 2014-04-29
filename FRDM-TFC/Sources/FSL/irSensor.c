@@ -1,5 +1,13 @@
 #include "FSL/FSL.h"
 
+void init_sensor(void){
+	uint8 i;
+	for (i = 0; i < 8; i++) {
+		sensor.index[i] = 4095;
+	}
+	sensor.treshold = 1024;
+}
+
 void init_irSensor(void){
 	/* Configuration GPIO */
 	//Configuration de PTC0 en pin singled-ended de ADC (Data)
