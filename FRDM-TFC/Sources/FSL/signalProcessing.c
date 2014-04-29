@@ -37,7 +37,7 @@ void init_sensor(void){
 	for (i = 0; i < 8; i++) {
 		sensor.index[i] = 4095;
 	}
-	sensor.treshold = 1024;
+	sensor.treshold = 175;
 }
 
 
