@@ -8,7 +8,12 @@ void init_sensor(void){
 	for (i = 0; i < 8; i++) {
 		sensor.index[i] = 4095;
 	}
-	sensor.treshold = 1024;
+	sensor.treshold = 500;
+	sensor.error=0;
+	sensor.lastDirection = middle;
+	sensor.maxBlackCount = 5;
+	sensor.minBlackCount = 2;
+	sensor.isFound = 0;
 }
 
 
@@ -37,11 +42,61 @@ void init_irSensor(void){
 void irSensorProcessing(uint16 * irSensor){
 	//Copie des donnees dans la structure
 	uint8 i;
+	uint8 numberOfBlackFound=0;
+	int16 indexFirstBlack=-1;
+	int16 indexLastBlack=-1;
+	
+	//Copie des donnees, binarization, denombration du nombre de noir
 	for(i=0; i<8; i++){
 		sensor.index[i] = irSensor[i];
+		if(sensor.index[i] > sensor.treshold){
+			sensor.binarizedIndex[i] = 1;
+			numberOfBlackFound++;
+			if(indexFirstBlack == -1){ //Si un noir n'a encore pas ete trouvé, c'est le premier.
+				indexFirstBlack = i;
+			}
+			indexLastBlack = i; //Le tableau est parcourus dans de 0 à 7, le dernier element qui satifera cette condition est donc le dernier noir
+		}
+		else{
+			sensor.binarizedIndex[i] = 0;
+		}
 	}
 	
-	//LED DEBUG
+	//Analyse des infos obtenu
+	//Si aucune bande noir n'a ete trouvee
+	if(indexFirstBlack == -1 || indexLastBlack == -1){
+		sensor.isFound = 0;
+		ihm_led(-1, 0, 0, 0);
+	}
+	//Si la largeur de la bande ne correpond pas auc standards définis
+	else if(numberOfBlackFound > sensor.maxBlackCount || numberOfBlackFound < sensor.minBlackCount){
+		sensor.isFound = 0;
+		ihm_led(-1, 0, 0, 0);
+	}
+	//Sinon, la bande est condiérée comme valide
+	else{
+		//Cacul de la position du centre
+		sensor.error = (indexLastBlack*10 - indexFirstBlack*10) - 35;
+		
+		//Memoristaion de la direction
+		if(sensor.error < -15){
+			sensor.lastDirection = right;
+		}
+		else if(sensor.error >= -15 && sensor.error <= 15){
+			sensor.lastDirection = middle;
+		}
+		else if(sensor.error > 15){
+			sensor.lastDirection = left;
+		}
+		
+		//Passage d'etat de ligne à trouvé
+		sensor.isFound = 1;
+		ihm_led(1, 0, 0, 0);
+	}
+	
+}
+
+void isSensorLedTest(void){
 	if(sensor.index[4] < sensor.treshold){
 		ihm_led(1, 0, 0, 0);
 	}
