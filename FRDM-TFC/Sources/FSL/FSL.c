@@ -10,6 +10,8 @@
 #include "FSL/FSL.h"
 #include "TFC/TFC.h"
 
+extern Sensor sensor;
+
 void FSL_Init(void) {
 
 	TFC_Init();
@@ -28,7 +30,7 @@ void FSL_Init(void) {
 
 void test_bibiche(void){
 	int i;
-	
+
 	ihm_blink(1500);
 	LED_CLEAR_ALL;
 
@@ -90,7 +92,7 @@ void start_competition(void){
 }
 
 void mesure_servo(){
-	
+
 	int b0 = 0;
 	int b1 = 0;
 
@@ -124,7 +126,7 @@ float getParamPot(int mul , int div){
 
 /* ------------------------- LABVIEW ---------------------------- */
 
-void labView(void) {
+void labView(uint8 boolLinescan) {
 
 	uint32_t i=0;
 
@@ -136,11 +138,19 @@ void labView(void) {
 		TERMINAL_PRINTF("\r\n");
 		TERMINAL_PRINTF("L:");
 
+
 		for(i=0;i<128;i++)
 		{
-			TERMINAL_PRINTF("%X,",LineScanImage0[i]);
+			if (boolLinescan) {
+				TERMINAL_PRINTF("%X,",LineScanImage0[i]);
+			} else {
+				if (i < 8) {
+					TERMINAL_PRINTF("%X,",sensor.index[i]);
+				} else {
+					TERMINAL_PRINTF("%X,",0);
+				}	
+			}
 		}
-
 		for(i=0;i<128;i++)
 		{
 			TERMINAL_PRINTF("%X",LineScanImage1[i]);

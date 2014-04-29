@@ -27,7 +27,7 @@ int main (void){
 			} else if (TFC_PUSH_BUTTON_1_PRESSED) {
 				test_vitesse();
 			} else {
-				labView();
+				labView(1); // Les 2 linescans
 			}
 		}
 
@@ -77,11 +77,11 @@ int main (void){
 				TFC_HBRIDGE_DISABLE;
 
 			} else {
-				//void
+				labView(0); // LineScan1 et IR
 
 			}
 
-			mesure_servo();
+			//mesure_servo();
 		}
 
 	}

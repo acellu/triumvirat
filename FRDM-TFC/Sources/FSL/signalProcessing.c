@@ -9,7 +9,7 @@
 Line line;
 
 // Linescan variable
-Linescan linescan[2];
+//Linescan linescan[2];
 
 // Sensor variable
 Sensor sensor;
@@ -22,15 +22,14 @@ void init_line(void){
 	line.scan_number = 0;
 	line.width = 0;
 }
-
+/*
 void init_linescan(uint8 channel , uint16 * line){
 	uint8 i;
 	for (i = 0; i < 128; ++i) {
 		linescan[channel].acquisition[i] = line[i];
 	}
-
-	//signalProcessing(linescan[channel].acquisition);
 }
+*/
 
 void init_sensor(void){
 	uint8 i;
@@ -39,7 +38,6 @@ void init_sensor(void){
 	}
 	sensor.treshold = 175;
 }
-
 
 
 void signalProcessing(uint16 * acquisition_camera){
@@ -56,8 +54,6 @@ void signalProcessing(uint16 * acquisition_camera){
 	gradient_computeLineData(gradient);
 
 }
-
-
 
 void irSensorProssesing(uint16 * irSensor){
 	//Copie des donnees dans la structure
@@ -168,7 +164,7 @@ void gradient_computeLineData(int32 * gradient){
 			line.position = ((data.minPosition + data.maxPosition) / 2);
 		}
 		else{
-
+			//void
 		}
 
 		if(line.position > THRESHOLD_RIGHT)
