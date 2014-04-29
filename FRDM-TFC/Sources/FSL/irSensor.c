@@ -43,8 +43,8 @@ void irSensorProcessing(uint16 * irSensor){
 	//Copie des donnees dans la structure
 	uint8 i;
 	uint8 numberOfBlackFound=0;
-	int8 indexFirstBlack=-1;
-	int8 indexLastBlack=-1;
+	int16 indexFirstBlack=-1;
+	int16 indexLastBlack=-1;
 	
 	//Copie des donnees, binarization, denombration du nombre de noir
 	for(i=0; i<8; i++){
@@ -66,10 +66,12 @@ void irSensorProcessing(uint16 * irSensor){
 	//Si aucune bande noir n'a ete trouvee
 	if(indexFirstBlack == -1 || indexLastBlack == -1){
 		sensor.isFound = 0;
+		ihm_led(-1, 0, 0, 0);
 	}
 	//Si la largeur de la bande ne correpond pas auc standards définis
 	else if(numberOfBlackFound > sensor.maxBlackCount || numberOfBlackFound < sensor.minBlackCount){
 		sensor.isFound = 0;
+		ihm_led(-1, 0, 0, 0);
 	}
 	//Sinon, la bande est condiérée comme valide
 	else{
@@ -77,18 +79,19 @@ void irSensorProcessing(uint16 * irSensor){
 		sensor.error = (indexLastBlack*10 - indexFirstBlack*10) - 35;
 		
 		//Memoristaion de la direction
-		if(sensor.error <= 20){
+		if(sensor.error < -15){
 			sensor.lastDirection = right;
 		}
-		else if(sensor.error > 20 && sensor.error <=45){
+		else if(sensor.error >= -15 && sensor.error <= 15){
 			sensor.lastDirection = middle;
 		}
-		else if(sensor.error > 45){
+		else if(sensor.error > 15){
 			sensor.lastDirection = left;
 		}
 		
 		//Passage d'etat de ligne à trouvé
 		sensor.isFound = 1;
+		ihm_led(1, 0, 0, 0);
 	}
 	
 }
