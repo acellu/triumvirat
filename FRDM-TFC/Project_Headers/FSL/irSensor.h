@@ -23,9 +23,15 @@
 
 ///Sensor
 typedef struct{
-	uint16 index[8]; //value between : [0 - 255]
+	uint16 index[8]; //value between : [0 - 4095]
+	uint8 binarizedIndex[8]; //0 for white and 1 for black
 	uint16 treshold; //treshold between black and white
 	uint8 irSensorReady; //bool true when array's value is ready
+	uint8 maxBlackCount; //Maximum black to be found before declaring the line as lost
+	uint8 minBlackCount;
+	Direction lastDirection; //Last know direction of the line
+	uint8 isFound; //1 if the line is found else 0
+	int16 error; //Error (between -35 and 35)
 }Sensor;
 
 void init_irSensor(void);
@@ -33,5 +39,8 @@ void init_irSensor(void);
 void init_sensor(void);
 
 void irSensorProcessing(uint16 * irSensor);
+
+
+void isSensorLedTest(void);
 
 #endif /* IRSENSOR_H_ */
