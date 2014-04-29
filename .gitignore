@@ -25,3 +25,4 @@
 *.mk
 *.d
 *.lst
+*.launch
