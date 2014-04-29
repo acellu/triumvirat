@@ -19,9 +19,9 @@ void FSL_Init(void) {
 	init_ihm();
 
 	init_sample_time();
-	
+
 	init_sensor();
-	
+
 	init_irSensor();
 
 }
@@ -137,19 +137,16 @@ void labView(uint8 boolLinescan) {
 
 		TERMINAL_PRINTF("\r\n");
 		TERMINAL_PRINTF("L:");
+		
+		if (!boolLinescan) {
+			
+		}
 
 
 		for(i=0;i<128;i++)
 		{
-			if (boolLinescan) {
-				TERMINAL_PRINTF("%X,",LineScanImage0[i]);
-			} else {
-				if (i < 8) {
-					TERMINAL_PRINTF("%X,",sensor.index[i]);
-				} else {
-					TERMINAL_PRINTF("%X,",0);
-				}	
-			}
+
+			TERMINAL_PRINTF("%X,",LineScanImage0[i]);
 		}
 		for(i=0;i<128;i++)
 		{

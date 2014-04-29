@@ -675,7 +675,7 @@ void ADC0_IRQHandler()
 			IR_SENSOR_ADDR_RESET;
 			IR_SENSOR_ADDR_0;
 			CurrentIrSensor = 0;
-			irSensorProssesing(irSensor);
+			irSensorProcessing(irSensor); // <-- signal processing
 			break;
 		default :
 			IR_SENSOR_ADDR_RESET;

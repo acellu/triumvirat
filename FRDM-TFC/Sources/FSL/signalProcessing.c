@@ -22,6 +22,7 @@ void init_line(void){
 	line.scan_number = 0;
 	line.width = 0;
 }
+
 /*
 void init_linescan(uint8 channel , uint16 * line){
 	uint8 i;
@@ -30,14 +31,6 @@ void init_linescan(uint8 channel , uint16 * line){
 	}
 }
 */
-
-void init_sensor(void){
-	uint8 i;
-	for (i = 0; i < 8; i++) {
-		sensor.index[i] = 4095;
-	}
-	sensor.treshold = 1024;
-}
 
 
 void signalProcessing(uint16 * acquisition_camera){
@@ -55,7 +48,7 @@ void signalProcessing(uint16 * acquisition_camera){
 
 }
 
-void irSensorProssesing(uint16 * irSensor){
+void irSensorProcessing(uint16 * irSensor){
 	//Copie des donnees dans la structure
 	uint8 i;
 	for(i=0; i<8; i++){
