@@ -31,6 +31,7 @@ void speed_fsm(void){
 	switch(state){
 
 	case Follow_full :
+		ihm_led(1,-1,-1,-1);
 		corrector.angle.proportional = SPEED_PROPORTIONAL_MAX;
 		corrector.angle.derivative = SPEED_DERIVATIVE_MAX;
 		
@@ -43,6 +44,7 @@ void speed_fsm(void){
 		}
 
 	case Brake :
+		ihm_led(-1,1,-1,-1);
 		//Attention pwm a -100 + voir correcteur des frein 
 		corrector.angle.proportional = SPEED_PROPORTIONAL_MAX;
 		corrector.angle.derivative = SPEED_DERIVATIVE_MAX;
@@ -55,7 +57,8 @@ void speed_fsm(void){
 		}
 		
 
-	case Follow_slow : 
+	case Follow_slow :
+		ihm_led(-1,-1,1,-1);
 		corrector.angle.proportional = SPEED_PROPORTIONAL_MIN;
 		corrector.angle.derivative = SPEED_DERIVATIVE_MIN;
 		
@@ -68,6 +71,7 @@ void speed_fsm(void){
 		}
 
 	case Acceleration :
+		ihm_led(-1,-1,-1,1);
 		corrector.angle.proportional = SPEED_PROPORTIONAL_ACC;
 		corrector.angle.derivative = SPEED_DERIVATIVE_ACC;
 		
