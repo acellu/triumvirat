@@ -8,6 +8,7 @@
 //Variable != de 0 si fini de compter, sinon = 0
 #define TIMER_FINISH (LPTMR0_CSR & LPTMR_CSR_TCF_MASK)
 #define TIMER_CLEAR_FLAG (LPTMR0_CSR &= ~LPTMR_CSR_TCF_MASK)
+#define TIMER_RESET_TIME (LPTMR0_CSR &= ~LPTMR_CSR_TEN_MASK)
 
 void lowPowerTimer_init(void);
 
