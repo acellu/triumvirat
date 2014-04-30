@@ -240,4 +240,3 @@ void init_sample_time(void){
 	PIT_TCTRL1 |= PIT_TCTRL_TEN_MASK;
 } 
 
-
