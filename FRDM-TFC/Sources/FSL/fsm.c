@@ -20,6 +20,9 @@ void init_fsm(void){
 
 	/* Initialise speed_fsm */
 	init_speed();
+	
+	/* Initialise the LTPMR Timer */
+	lowPowerTimer_init();
 
 	/* Set the Default duty cycle to 0 % duty cycle */
 	MOTOR_STOP;
@@ -41,6 +44,7 @@ void init_fsm(void){
 void fsm(void){
 
 	static etat_e etat = Init; //Variable de la FSM. Choix de l etat de départ de la FSM.
+	static temp_led=0;
 
 	switch(etat){
 
@@ -75,9 +79,13 @@ void fsm(void){
 			etat = Following_line;
 		}
 		/*Boutton Reset */
-		if(TFC_PUSH_BUTTON_1_PRESSED)
+		if(TFC_PUSH_BUTTON_1_PRESSED){
 			etat = Init;
+		}
+		
 		break;
+		
+
 
 	case Following_line :
 

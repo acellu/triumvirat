@@ -28,6 +28,10 @@
 #define SPEED_BRAKE					(float)-100
 #define BRAKE						setMotorPWM(SPEED_BRAKE , SPEED_BRAKE)
 
+//Temps d'acceleration et de deceleration en ms
+#define TIME_BRAKE					(uint16)200
+#define TIME_ACCELERATION			(uint16)300
+
 /* -------------------------------- */
 
 //Typedef enum de la FSM (machine a etat).

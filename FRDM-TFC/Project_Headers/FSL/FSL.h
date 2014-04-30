@@ -15,6 +15,7 @@
 #include "FSL/irSensor.h"
 #include "FSL/speed.h"
 #include "FSL/camera.h"
+#include "FSL/lowPowerTimer.h"
 
 /* ------------- SERVO --------------- */
 

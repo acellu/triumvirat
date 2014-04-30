@@ -39,17 +39,19 @@ void speed_fsm(void){
 		if (event.brake) {
 			state = Brake;
 			//TIMER_BRAKE_START
+			lowPowerTimer_setTime(TIME_BRAKE);
 		}
 
 	case Brake :
 		//Attention pwm a -100 + voir correcteur des frein 
 		BRAKE;
 
-		/*
-		if (TIMER_BRAKE_STOP) {
+		
+		if (TIMER_FINISH) {
+			TIMER_CLEAR_FLAG;
 			state = Follow_slow;
 		}
-		 */
+		
 
 	case Follow_slow : 
 		corrector.angle.proportional = SPEED_PROPORTIONAL_MIN;
@@ -60,6 +62,7 @@ void speed_fsm(void){
 		if (event.straight) {
 			state = Acceleration;
 			//TIMER_ACCELERATION_START
+			lowPowerTimer_setTime(TIME_ACCELERATION);
 		}
 
 	case Acceleration :
@@ -68,16 +71,20 @@ void speed_fsm(void){
 		
 		ACCELERATION;
 
-		/*
-		if (TIMER_ACCELERATION_STOP) {
+		
+		if (TIMER_FINISH) {
+			TIMER_CLEAR_FLAG;
 			state = Follow_full;
 		}
-		 */
+
 
 		if (event.brake) {
+			//Clear current timer
+			TIMER_RESET_TIME;
 			state = Brake;
 			//TIMER_BRAKE_START
-		}		
+			lowPowerTimer_setTime(TIME_BRAKE);
+		}	
 		
 	default :
 		state = Follow_full;
