@@ -8,7 +8,7 @@
 #include "TFC/TFC.h"
 #include "FSL/FSL.h"
 
-Event event;
+extern Event event;
 
 extern Corrector corrector;
 

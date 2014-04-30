@@ -20,15 +20,6 @@ void init_line(void){
 	line.width = 0;
 }
 
-/*
-void init_linescan(uint8 channel , uint16 * line){
-	uint8 i;
-	for (i = 0; i < 128; ++i) {
-		linescan[channel].acquisition[i] = line[i];
-	}
-}
- */
-
 
 void gradient_compute(uint16 * acquisition_camera, int32 * gradient){
 	uint8 i = 0;

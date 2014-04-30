@@ -28,15 +28,15 @@
  * Line detection *
  ******************/
 /// Minimum width of the line to be accepted as found
-#define MINIMUM_WIDTH 5 //22
+#define MINIMUM_WIDTH 3
 /// Maximum width of the line to be accepted as found
-#define MAXIMUM_WIDTH 15 //35
+#define MAXIMUM_WIDTH 15
 /// Maximum line movement allowed in pixel per image(if actual line - old line > this varaible, the echantillon will be rejected)
 #define MAXIMUM_LINE_MOVEMENT_ALLOWED 80
 /// Threshold for setting the line as 'left' in the direction variable
-#define THRESHOLD_LEFT 	55	//53
+#define THRESHOLD_LEFT 	35
 /// Threshold for setting the line as 'right' in the direction variable
-#define THRESHOLD_RIGHT 73	//75
+#define THRESHOLD_RIGHT 90
 /// Offset for exclude noise when the line is too close of the camera edge (computeLineDate_v2)
 #define EDGE_NOISE_OFFSET 8
 
@@ -176,7 +176,6 @@ void signalProcessing(uint16 * acquisition_camera);
 uint8 gradient_peakDetection(int32 * signal, Peak * peak, uint8 threshold);
 void gradient_moyenneMobile3(int32 * signal, int32 * treated_signal);
 void init_line(void);
-void init_linescan(uint8 channel , uint16 * line);
 void init_sensor(void);
 //void gradient_checkIfFinishLine(uint8 numberofPeak, Peak * peak);
 //int gradient_checkIfFinishLine_condition(int8 firstPeak, int8 lastPeak, Peak * peak, uint8 version);

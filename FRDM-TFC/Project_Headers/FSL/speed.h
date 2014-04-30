@@ -11,18 +11,18 @@
 /* ------------ MACRO ------------- */
 
 #define SPEED_MAX					(float)80
-#define SPEED_PROPORTIONAL_MAX		(float)0
-#define SPEED_DERIVATIVE_MAX		(float)0
+#define SPEED_PROPORTIONAL_MAX		(float)0.30
+#define SPEED_DERIVATIVE_MAX		(float)0.50
 #define FAST						setMotorPWM(SPEED_MAX , SPEED_MAX)
 
 #define SPEED_MIN					(float)40
-#define SPEED_PROPORTIONAL_MIN		(float)0
-#define SPEED_DERIVATIVE_MIN		(float)0
+#define SPEED_PROPORTIONAL_MIN		(float)0.30
+#define SPEED_DERIVATIVE_MIN		(float)0.80
 #define SLOW						setMotorPWM(SPEED_MIN , SPEED_MIN)
 
 #define SPEED_ACC					(float)100				
-#define SPEED_PROPORTIONAL_ACC		(float)0
-#define SPEED_DERIVATIVE_ACC		(float)0
+#define SPEED_PROPORTIONAL_ACC		(float)0.1
+#define SPEED_DERIVATIVE_ACC		(float)0.5
 #define ACCELERATION				setMotorPWM(SPEED_ACC , SPEED_ACC)
 
 #define SPEED_BRAKE					(float)-100
@@ -37,13 +37,6 @@ typedef enum{
 	Follow_slow,
 	Acceleration
 }state_e;
-
-//Structure event
-typedef struct{
-	uint8 brake;
-	uint8 straight;
-	uint8 finishline;
-}Event;
 
 
 void init_speed(void);
