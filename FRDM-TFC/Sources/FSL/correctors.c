@@ -75,7 +75,6 @@ void angle_manager(void){
 		corrector.angle.error = -sensor.error;
 		angle_corrector(); 
 	}
-/*
 	else{
 		if(sensor.lastDirection == right){
 			setServoAngle(ANGLE_NO_LINE);
@@ -87,7 +86,6 @@ void angle_manager(void){
 			setServoAngle(-ANGLE_NO_LINE);
 		}
 	}
-	*/
 }
 
 void angle_corrector(){

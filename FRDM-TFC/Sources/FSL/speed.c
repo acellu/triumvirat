@@ -44,6 +44,8 @@ void speed_fsm(void){
 
 	case Brake :
 		//Attention pwm a -100 + voir correcteur des frein 
+		corrector.angle.proportional = SPEED_PROPORTIONAL_MAX;
+		corrector.angle.derivative = SPEED_DERIVATIVE_MAX;
 		BRAKE;
 
 		
