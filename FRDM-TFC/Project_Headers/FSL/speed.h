@@ -25,12 +25,13 @@
 #define SPEED_DERIVATIVE_ACC		(float)0.5
 #define ACCELERATION				setMotorPWM(SPEED_ACC , SPEED_ACC)
 
-#define SPEED_BRAKE					(float)-100
+#define SPEED_BRAKE					(float)-80
 #define BRAKE						setMotorPWM(SPEED_BRAKE , SPEED_BRAKE)
 
 //Temps d'acceleration et de deceleration en ms
-#define TIME_BRAKE					(uint16)200
-#define TIME_ACCELERATION			(uint16)300
+#define TIME_BRAKE					(uint16)100
+#define TIME_ACCELERATION			(uint16)200
+#define TIME_LOCK					(uint16)1500
 
 /* -------------------------------- */
 

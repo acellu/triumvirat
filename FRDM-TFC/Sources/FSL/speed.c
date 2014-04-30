@@ -27,6 +27,7 @@ void init_speed(void){
 void speed_fsm(void){
 
 	static state_e state = Follow_full;
+	static slowBlocked = 1;
 
 	switch(state){
 
@@ -42,6 +43,7 @@ void speed_fsm(void){
 			//TIMER_BRAKE_START
 			lowPowerTimer_setTime(TIME_BRAKE);
 		}
+		break;
 
 	case Brake :
 		ihm_led(-1,1,-1,-1);
@@ -53,22 +55,30 @@ void speed_fsm(void){
 		
 		if (TIMER_FINISH) {
 			TIMER_CLEAR_FLAG;
+			lowPowerTimer_setTime(TIME_LOCK);
 			state = Follow_slow;
 		}
+		break;
 		
 
 	case Follow_slow :
+		slowBlocked = 1;
 		ihm_led(-1,-1,1,-1);
 		corrector.angle.proportional = SPEED_PROPORTIONAL_MIN;
 		corrector.angle.derivative = SPEED_DERIVATIVE_MIN;
 		
 		SLOW;
 
-		if (event.straight) {
+		if(TIMER_FINISH){
+			slowBlocked = 0;
+		}
+		
+		if (event.straight && slowBlocked == 0) {
 			state = Acceleration;
 			//TIMER_ACCELERATION_START
 			lowPowerTimer_setTime(TIME_ACCELERATION);
 		}
+		break;
 
 	case Acceleration :
 		ihm_led(-1,-1,-1,1);
@@ -83,7 +93,8 @@ void speed_fsm(void){
 			state = Follow_full;
 		}
 
-
+		
+		
 		if (event.brake) {
 			//Clear current timer
 			TIMER_RESET_TIME;
@@ -91,9 +102,11 @@ void speed_fsm(void){
 			//TIMER_BRAKE_START
 			lowPowerTimer_setTime(TIME_BRAKE);
 		}	
+		break;
 		
 	default :
 		state = Follow_full;
+		break;
 
 
 	}

@@ -614,7 +614,7 @@ void ADC0_IRQHandler()
 			/* ------------------ UPDATE AXEL ----------------- */
 			//signalProcessing(LineScanImage0);
 			//signalProcessing(LineScanImage1);
-			camera_processing(LineScanImage1);
+			//camera_processing(LineScanImage1);
 			/* ------------------------------------------------ */
 			LineScanImageReady = TRUE;
 		}

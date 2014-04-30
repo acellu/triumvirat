@@ -44,7 +44,6 @@ void init_fsm(void){
 void fsm(void){
 
 	static etat_e etat = Init; //Variable de la FSM. Choix de l etat de départ de la FSM.
-	static temp_led=0;
 
 	switch(etat){
 
@@ -96,7 +95,8 @@ void fsm(void){
 
 		/* ------- SPEED_FSM ------- */
 
-		speed_fsm(); //sous-FSM --> speed.c
+		speed_manager();
+		//speed_fsm(); //sous-FSM --> speed.c
 
 		/* ------------------------- */
 

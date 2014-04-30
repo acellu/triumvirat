@@ -5,6 +5,7 @@
 // Position of the middle of the line (255 = not found)
 extern Line line;
 extern Sensor sensor;
+extern Event event;
 
 Corrector corrector;
 
@@ -33,17 +34,10 @@ void init_correctors(void){
  * Correcteur proportionnel
  */
 void speed_manager(void){
-	if(line.found == 1){
-
-		if((line.position - 64) > 0){
+	if(sensor.isFound == 1){
 			//Computing the duty value for a line detected on the right
-			corrector.speed.dutyLeft  = SPEED_DUTY_MAX - (int8)(line.position - 64) * corrector.speed.coefHigh;
-			corrector.speed.dutyRight = SPEED_DUTY_MAX - (int8)(line.position - 64) * corrector.speed.coefLow;
-		}else{
-			//Computing the duty value for a line detected on the left
-			corrector.speed.dutyLeft = SPEED_DUTY_MAX - (int8)(64 - line.position) * corrector.speed.coefLow;
-			corrector.speed.dutyRight = SPEED_DUTY_MAX - (int8)(64 -line.position) * corrector.speed.coefHigh;
-		}
+			corrector.speed.dutyLeft  = SPEED_DUTY_MAX;
+			corrector.speed.dutyRight = SPEED_DUTY_MAX;
 	}else{
 		//Checking if the line has been found by the camera
 		corrector.speed.dutyLeft = SPEED_NO_LINE;

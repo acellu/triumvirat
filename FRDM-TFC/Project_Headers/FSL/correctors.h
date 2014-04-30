@@ -11,7 +11,7 @@
  */
 
 
-#define SPEED_DUTY_MAX (float)70.0
+#define SPEED_DUTY_MAX (float)65.0
 #define SPEED_DUTY_MIN (float)40.0
 #define SPEED_OFFSET_HIGH (float)50.0
 #define SPEED_OFFSET_LOW  (float)40.0
@@ -68,7 +68,7 @@
 #define ANGLE_SUM_FACTOR (float)0.35 //0.2
 
 
-#define ANGLE_NO_LINE (float)30.0
+#define ANGLE_NO_LINE (float)20.0
 
 
 #define ANGLE_SAMPLE_TIME 0x15924
