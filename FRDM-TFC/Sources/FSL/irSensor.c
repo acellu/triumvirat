@@ -66,12 +66,12 @@ void irSensorProcessing(uint16 * irSensor){
 	//Si aucune bande noir n'a ete trouvee
 	if(indexFirstBlack == -1 || indexLastBlack == -1){
 		sensor.isFound = 0;
-		ihm_led(-1, 0, 0, 0);
+		//ihm_led(-1, 0, 0, 0);
 	}
 	//Si la largeur de la bande ne correpond pas auc standards définis
 	else if(numberOfBlackFound > sensor.maxBlackCount || numberOfBlackFound < sensor.minBlackCount){
 		sensor.isFound = 0;
-		ihm_led(-1, 0, 0, 0);
+		//ihm_led(-1, 0, 0, 0);
 	}
 	//Sinon, la bande est condiérée comme valide
 	else{
@@ -91,7 +91,7 @@ void irSensorProcessing(uint16 * irSensor){
 		
 		//Passage d'etat de ligne à trouvé
 		sensor.isFound = 1;
-		ihm_led(1, 0, 0, 0);
+		//ihm_led(1, 0, 0, 0);
 	}
 	
 }

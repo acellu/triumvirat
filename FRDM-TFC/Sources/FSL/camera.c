@@ -92,21 +92,21 @@ void speed_event(int32 * gradient){
 			line.last_direction = right;
 			event.brake = TRUE;
 			event.straight = FALSE;
-			ihm_led(0,1,-1,-1);
+			//ihm_led(0,1,-1,-1);
 
 		}else if (line.position < THRESHOLD_LEFT) {
 
 			line.last_direction = left;
 			event.brake = TRUE;
 			event.straight = FALSE;
-			ihm_led(0,1,-1,-1);
+			//ihm_led(0,1,-1,-1);
 
 		}else{
 
 			line.last_direction = middle;
 			event.brake = FALSE;
 			event.straight = TRUE;
-			ihm_led(0,-1,1,-1);
+			//ihm_led(0,-1,1,-1);
 		}
 		/* ------------------------------------------- */
 	}
@@ -138,6 +138,6 @@ void event_finishline(int32 * signal , int treshold){
 		event.finishline = TRUE;
 		event.brake = FALSE;
 		event.straight = FALSE;
-		ihm_led(0,-1,-1,1);
+		ihm_led(0,0,0,1);
 	}
 }
