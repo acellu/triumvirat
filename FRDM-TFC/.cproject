@@ -87,7 +87,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="IR/TFC_ADC_max.c|IR/FSM_IR.h|IR/FSM_IR.C|save/camera.h|new/FSM_IR.C|save/correctors.h|save/correctors_1.h|save/camera.c|save/main_old.c|new/TFC_ADC_max.c|save/signalProcessing.h|save/correctors_1.c|new/FSM_IR.h|save/isr.h|save/correctors.c|save/signalProcessing.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="Project_Headers/TFC/TFC_Types.h|Sources/Blocks/block_unknown.c|Sources/Blocks/block_turn.c|Sources/Blocks/block_straight.c|Sources/Blocks/block_start_finish.c|Sources/Blocks/block_main.c|Sources/Blocks/block_hill.c|Sources/Blocks/block_chicanes.c|Project_Headers/Blocks/block_unknown.h|Project_Headers/Blocks/block_turn.h|Project_Headers/Blocks/block_straight.h|Project_Headers/Blocks/block_start_finish.h|Project_Headers/Blocks/block_main.h|Project_Headers/Blocks/block_hill.h|Project_Headers/Blocks/block_chicanes.h|save/fsm.c|IR/TFC_ADC_max.c|IR/FSM_IR.h|IR/FSM_IR.C|save/camera.h|new/FSM_IR.C|save/correctors.h|save/correctors_1.h|save/camera.c|save/main_old.c|new/TFC_ADC_max.c|save/signalProcessing.h|save/correctors_1.c|new/FSM_IR.h|save/isr.h|save/correctors.c|save/signalProcessing.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

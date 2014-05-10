@@ -14,7 +14,7 @@
 /// Pixel value max - 8 bits
 #define PIXEL_VALUE_MAX_8_BITS 255
 /// First scanned value
-#define FIRST_SCANNED_VALUE 8
+#define FIRST_SCANNED_VALUE 10
 /// Last scanned value
 #define LAST_SCANNED_VALUE 120
 /// Minimum value of the gradient to be detected as a transition
@@ -28,15 +28,15 @@
  * Line detection *
  ******************/
 /// Minimum width of the line to be accepted as found
-#define MINIMUM_WIDTH 20 //22
+#define MINIMUM_WIDTH 3
 /// Maximum width of the line to be accepted as found
-#define MAXIMUM_WIDTH 35 //32
+#define MAXIMUM_WIDTH 15
 /// Maximum line movement allowed in pixel per image(if actual line - old line > this varaible, the echantillon will be rejected)
 #define MAXIMUM_LINE_MOVEMENT_ALLOWED 80
 /// Threshold for setting the line as 'left' in the direction variable
-#define THRESHOLD_LEFT 	55	//53
+#define THRESHOLD_LEFT 	35
 /// Threshold for setting the line as 'right' in the direction variable
-#define THRESHOLD_RIGHT 73	//75
+#define THRESHOLD_RIGHT 90
 /// Offset for exclude noise when the line is too close of the camera edge (computeLineDate_v2)
 #define EDGE_NOISE_OFFSET 8
 
@@ -55,6 +55,17 @@
 #define FINISH_LINE_BLACK_WIDTH 35
 /// The version of function gradient_checkIfFinishLine (1 to 3)
 #define FINISH_LINE_VERSION 1
+
+/*************************
+ * Sensor detection *
+ *************************/
+/// Value of white
+#define WHITE 255
+/// Value of black
+#define BLACK 0
+/// Treshold between black and white
+#define TRESHOLD_SENSOR 128
+
 
 
 /// Variable for the last known direction of the line
@@ -78,6 +89,7 @@ typedef struct{
 	uint8 found;		/// Equal 0 is the line is not found, 1 if the line is found
 	uint8 width;		/// Width of the line found
 	Direction last_direction;	///Last know direction of the line
+	Direction next_direction;	///Next direction
 	LineData linedata;	/// Use for debug purpose, linedata have all the data used to compute the other variables of the line Structure
 	uint8 isFinishLine;	/// Equal 1 if the current line scanned is a finish line, if not, it will be equal to 0
 	uint32 scan_number; /// Count each acquisition made by the camera from the beginning, can be used to know the up time of the car
@@ -93,6 +105,10 @@ typedef enum{
 /// Peak variable, used to know the location of every peak detected in the signal processing (used for finishline finding)
 typedef struct{
 	uint8 position;		/// Position of the peak
+	uint8 index_min;
+	uint8 index_max;
+	uint8 index_middle;
+	uint8 width;
 	Signe_e signe;		/// Sign of the peak
 }Peak;
 
@@ -100,28 +116,26 @@ typedef struct{
 /// Gradient
 typedef struct{
 	Peak peak[6];
+	int32 signal[128];
 }Gradient;
 
-
-/// Linescan
+///Pixel
 typedef struct{
 	uint8 pixel_min;
 	uint8 pixel_max;
-	
 	uint8 pixel_value_white;
 	uint8 pixel_value_black;
-	
-	uint8 peak_index_min;
-	uint8 peak_index_max;
-	uint8 peak_index_middle;
-	uint8 peak_width;
-	
+}Pixel;
+
+
+///Linescan
+typedef struct{
+	//Pixel pixel;
+	//vuint16* acquisition;
+	uint16 acquisition[128];
 	Gradient gradient;
-	
 	int8 offset;
 }Linescan;
-
-
 
 /**
  * DEBUG USING LCD
@@ -159,11 +173,11 @@ void gradient_compute(uint16 * acquisition_camera, int32 * gradient);
 void gradient_computeLineData(int32 * gradient);
 void gradient_moyenneMobile(int32 * signal, int32 * treated_signal);
 void signalProcessing(uint16 * acquisition_camera);
-void gradient_checkIfFinishLine_old(uint8 numberofPeak, Peak * peak);
 uint8 gradient_peakDetection(int32 * signal, Peak * peak, uint8 threshold);
 void gradient_moyenneMobile3(int32 * signal, int32 * treated_signal);
 void init_line(void);
-void gradient_checkIfFinishLine(uint8 numberofPeak, Peak * peak);
-int gradient_checkIfFinishLine_condition(int8 firstPeak, int8 lastPeak, Peak * peak, uint8 version);
+void init_sensor(void);
+//void gradient_checkIfFinishLine(uint8 numberofPeak, Peak * peak);
+//int gradient_checkIfFinishLine_condition(int8 firstPeak, int8 lastPeak, Peak * peak, uint8 version);
 
 #endif /* SIGNALPROCESSING_H_ */

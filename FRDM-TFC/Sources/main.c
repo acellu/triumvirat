@@ -4,12 +4,6 @@
 
 extern Corrector corrector;
 
-/*
- * TO DO : 
- * Adapter TFC_InitClock() -> "TFC.c"
- *
- */
-
 /********************************************************************/
 int main (void){
 
@@ -23,72 +17,65 @@ int main (void){
 		/* FSM */
 		if(TFC_DIP_SWITCH0){
 			fsm();
-		}
+		} 
 
-		/* FUNCTION TEST */
+		/* LABVIEW */
 		if (TFC_DIP_SWITCH1) {
 
 			if (TFC_PUSH_BUTTON_0_PRESSED) {
-				test_bibiche();
+				//void
+
 			} else if (TFC_PUSH_BUTTON_1_PRESSED) {
-				test_vitesse();
+				labView(1); // Les 2 linescans
 			} else {
-				labView();
+				labView(0); // LineScan1 et IR 
+			}
+		}
+
+		/* REGLAGE SPEED_MAX et SPEED_BRAKE + Fonctions tests */
+		if (TFC_DIP_SWITCH2) {
+
+			if (TFC_PUSH_BUTTON_0_PRESSED) {
+				//void
+
+			} else if (TFC_PUSH_BUTTON_1_PRESSED) {
+				//test_bibiche();
+				//test_vitesse();
+				//bibiche_surprise();
+				//start_competition();
+			} else {
+				//mesure_servo();
 			}
 		}
 
 		/* CORRECTORS PARAMETER ON PUTTY */
-		if (TFC_DIP_SWITCH2) {
+		if (TFC_DIP_SWITCH3) {
 
 			if(TFC_Ticker[0]>=20)
 			{
 				TFC_Ticker[0] = 0; //reset the Ticker
-				TFC_Delay_mS(5000);
+				TFC_Delay_mS(4000);
 
 				if (TFC_PUSH_BUTTON_0_PRESSED) {
 					corrector.angle.derivative = getParamPot(20,20);
 					TERMINAL_PRINTF("---> ANGLE_DERIVATOR_FACTOR : | %d | <--- (factor:1000)\n\r ",(int)(corrector.angle.derivative * 1000));
 
 				} else if (TFC_PUSH_BUTTON_1_PRESSED) {
-					corrector.angle.integral = getParamPot(20,20);
-					TERMINAL_PRINTF("---> ANGLE_INTEGATOR_FACTOR : | %d | <--- (factor:1000)\n\r ",(int)(corrector.angle.integral * 1000));
-
-				} else {
 					corrector.angle.proportional = getParamPot(20,20);
 					TERMINAL_PRINTF("---> ANGLE_POPORTIONAL_FACTOR : | %d | <--- (factor:1000)\n\r ",(int)(corrector.angle.proportional * 1000));
+
+					/*
+					corrector.angle.integral = getParamPot(20,20);
+					TERMINAL_PRINTF("---> ANGLE_INTEGATOR_FACTOR : | %d | <--- (factor:1000)\n\r ",(int)(corrector.angle.integral * 1000));
+					 */
+
+				} else {
+					TERMINAL_PRINTF("---> ANGLE_POPORTIONAL_FACTOR : | %d | <--- (factor:1000)\n\r ",(int)(corrector.angle.proportional * 1000));
+					TERMINAL_PRINTF("---> ANGLE_DERIVATOR_FACTOR : | %d | <--- (factor:1000)\n\r ",(int)(corrector.angle.derivative * 1000));
+					TERMINAL_PRINTF("---> ANGLE_INTEGATOR_FACTOR : | %d | <--- (factor:1000)\n\r ",(int)(corrector.angle.integral * 1000));
 				}
 			}
 		}
-
-		/* OTHER */
-		if (TFC_DIP_SWITCH3) {
-
-			if (TFC_PUSH_BUTTON_0_PRESSED) {
-				ihm_blink(5000);
-				SERVO_INIT;
-				TFC_HBRIDGE_ENABLE;
-				setMotorPWM(30,30);
-				TFC_Delay_mS(5500);
-				MOTOR_STOP;
-				TFC_Delay_mS(3000);
-				SERVO_INIT;
-				setMotorPWM(-35,-35);
-				TFC_Delay_mS(9000);
-				MOTOR_STOP;
-				TFC_HBRIDGE_DISABLE;
-
-			} else if (TFC_PUSH_BUTTON_1_PRESSED) {
-				TFC_HBRIDGE_ENABLE;
-				setMotorPWM(30 , 30);
-				TFC_Delay_mS(3000);
-				TFC_HBRIDGE_DISABLE;
-
-			} else {
-				//void
-
-			}
-		}
-
 	}
 
 	return 0;

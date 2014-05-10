@@ -12,6 +12,10 @@
 #include "FSL/fsm.h"
 #include "FSL/correctors.h"
 #include "FSL/signalProcessing.h"
+#include "FSL/irSensor.h"
+#include "FSL/speed.h"
+#include "FSL/camera.h"
+#include "FSL/lowPowerTimer.h"
 
 /* ------------- SERVO --------------- */
 
@@ -33,13 +37,15 @@ void test_vitesse(void);
 
 void test_bibiche(void);
 
+void bibiche_surprise(void);
+
 void start_competition(void);
 
 void mesure_servo(void);
 
 float getParamPot(int mul , int div);
 
-void labView(void);
+void labView(uint8 boolLinescan);
 
 void setMotorPWM(float MotorA , float MotorB);
 

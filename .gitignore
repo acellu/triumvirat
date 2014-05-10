@@ -16,3 +16,14 @@
 *.exe
 *.out
 *.app
+
+#CodeWarrior compilation files
+*.args
+*.elf
+*.map
+*.local
+*.mk
+*.d
+*.lst
+*.launch
+*.xml

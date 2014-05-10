@@ -10,6 +10,8 @@
 #include "FSL/FSL.h"
 #include "TFC/TFC.h"
 
+extern Sensor sensor;
+
 void FSL_Init(void) {
 
 	TFC_Init();
@@ -18,13 +20,17 @@ void FSL_Init(void) {
 
 	init_sample_time();
 
+	init_sensor();
+
+	init_irSensor();
+
 }
 
 /* ----------------------- TEST FUNCTION ------------------------ */
 
 void test_bibiche(void){
 	int i;
-	
+
 	ihm_blink(1500);
 	LED_CLEAR_ALL;
 
@@ -65,13 +71,27 @@ void test_bibiche(void){
 }
 
 void test_vitesse(void){
-	ihm_blink(1500);
+	ihm_blink(1000);
 	TFC_HBRIDGE_ENABLE;
 	MOTOR_MAX;
 	TFC_Delay_mS(1000);
 	MOTOR_STOP;
 	TFC_HBRIDGE_DISABLE;
 	LED_CLEAR_ALL;
+}
+
+void bibiche_surprise(void){
+	ihm_blink(5000);
+	SERVO_INIT;
+	TFC_HBRIDGE_ENABLE;
+	setMotorPWM(30,30);
+	TFC_Delay_mS(5000);
+	MOTOR_STOP;
+	TFC_Delay_mS(4000);
+	setMotorPWM(-35,-35);
+	TFC_Delay_mS(8000);
+	MOTOR_STOP;
+	TFC_HBRIDGE_DISABLE;
 }
 
 void start_competition(void){
@@ -86,7 +106,7 @@ void start_competition(void){
 }
 
 void mesure_servo(){
-	
+
 	int b0 = 0;
 	int b1 = 0;
 
@@ -120,9 +140,9 @@ float getParamPot(int mul , int div){
 
 /* ------------------------- LABVIEW ---------------------------- */
 
-void labView(void) {
+void labView(uint8 boolLinescan) {
 
-	uint32_t i=0;
+	uint8_t i=0,j=0;
 
 	if(TFC_Ticker[0]>100 && LineScanImageReady==1)
 	{
@@ -132,11 +152,24 @@ void labView(void) {
 		TERMINAL_PRINTF("\r\n");
 		TERMINAL_PRINTF("L:");
 
-		for(i=0;i<128;i++)
-		{
-			TERMINAL_PRINTF("%X,",LineScanImage0[i]);
+		if (boolLinescan == 0) {
+			/* affichage sous labview de 8 capteurs dans un tableau de 128 */
+			for (i = 0; i < 128; i++) {
+				if (i < 16 * (j+1)) {
+					LineScanImage0[i] = sensor.index[j];
+				}
+				if (i == (16 * (j+1)) - 1) {
+					j++;
+				}
+			}
+			j = 0;
 		}
 
+		for(i=0;i<128;i++)
+		{
+
+			TERMINAL_PRINTF("%X,",LineScanImage0[i]);
+		}
 		for(i=0;i<128;i++)
 		{
 			TERMINAL_PRINTF("%X",LineScanImage1[i]);
@@ -206,5 +239,4 @@ void init_sample_time(void){
 	/* Enable timer */
 	PIT_TCTRL1 |= PIT_TCTRL_TEN_MASK;
 } 
-
 
