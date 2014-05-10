@@ -2,6 +2,8 @@
 #include "TFC/TFC.h"
 #include "FSL/FSL.h"
 
+#define SPEED_FSM
+
 extern Line line;
 extern Sensor sensor;
 extern Event event;
@@ -20,7 +22,7 @@ void init_fsm(void){
 
 	/* Initialise speed_fsm */
 	init_speed();
-	
+
 	/* Initialise the LTPMR Timer */
 	lowPowerTimer_init();
 
@@ -81,9 +83,9 @@ void fsm(void){
 		if(TFC_PUSH_BUTTON_1_PRESSED){
 			etat = Init;
 		}
-		
+
 		break;
-		
+
 
 
 	case Following_line :
@@ -94,10 +96,13 @@ void fsm(void){
 		}
 
 		/* ------- SPEED_FSM ------- */
-
+		#ifdef SPEED_FSM
+		speed_fsm(); //sous-FSM --> speed.c
+		#warning SPEED_FSM is enable
+		#else
 		speed_manager();
-		//speed_fsm(); //sous-FSM --> speed.c
-
+		#warning SPEED_MANAGER is enable
+		#endif
 		/* ------------------------- */
 
 		if (event.finishline) {
