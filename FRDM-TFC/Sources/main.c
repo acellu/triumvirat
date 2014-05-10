@@ -68,11 +68,12 @@ int main (void){
 				SERVO_INIT;
 				TFC_HBRIDGE_ENABLE;
 				setMotorPWM(30,30);
-				TFC_Delay_mS(5000);
+				TFC_Delay_mS(5500);
 				MOTOR_STOP;
-				TFC_Delay_mS(4000);
+				TFC_Delay_mS(3000);
+				SERVO_INIT;
 				setMotorPWM(-35,-35);
-				TFC_Delay_mS(8000);
+				TFC_Delay_mS(9000);
 				MOTOR_STOP;
 				TFC_HBRIDGE_DISABLE;
 
@@ -86,8 +87,6 @@ int main (void){
 				//void
 
 			}
-
-			mesure_servo();
 		}
 
 	}
